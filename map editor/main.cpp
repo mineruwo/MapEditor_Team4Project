@@ -77,13 +77,12 @@ int main()
 
         window.draw(grid.Getgrid(), &grid.Gettexgrid());
 
-        map.DrawMap(window);
-
-      
         if (isPlayerInit && dt.asSeconds() <= 1.f / 200.f)
         {
             window.draw(player.GetSprite());
         }
+
+        map.DrawMap(window);
         window.display();
     }
 
@@ -113,9 +112,16 @@ void CreateWalls(std::vector<Wall*>& walls, Map& mapdata)
             break;
         }
        
+        if (mapdata.GetIdxVertex()[idx] == 89)
+        {
+            idx++;
+            continue;
+        }
     
         Wall* tile = new Wall(mapdata.GeTtiles()[0].GettilesRect()[idx]);
         walls.push_back(tile);
+        std::cout << idx << "loaded" << std::endl;
+
 
         idx++;
      

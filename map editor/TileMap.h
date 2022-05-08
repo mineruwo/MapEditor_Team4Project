@@ -14,6 +14,7 @@ private:
     sf::Texture m_tileset;
 
     std::vector<FloatRect> tilesSetRect;
+    std::vector<Vector2u> tilesPos;
 
 public:
 	bool load(const std::string& tileset, sf::Vector2u tileSize, std::vector<int> tiles, unsigned int width, unsigned int height, std::vector<int> mapdata);

@@ -85,7 +85,6 @@ void Map::LoadMap()
  
     TileMap tile;
 
-    
     int idx = 0;
     int count = 0;
     std::ifstream ifs;

@@ -17,8 +17,8 @@ Player::Player()
 ================================*/
 void Player::Init()
 {
-	sprite.setPosition(20,0);
-	sprite.setScale(4.f, 4.f);
+	sprite.setPosition(600,0);
+	sprite.setScale(2.f, 2.f);
 	sprite.setOrigin(0, 32 * 4.f);
 
 	texture.loadFromFile("graphics/player_idle A_B_C.png");
@@ -121,23 +121,23 @@ void Player::UpdateInput()
 {
 	if (InputMgr::GetKeyDown(Keyboard::Right)) //오른쪽 이동
 	{
-		sprite.setScale(4.f, 4.f);
+		sprite.setScale(2.f, 2.f);
 		animation.Play("Walk");		
 	}
 	if (InputMgr::GetKeyDown(Keyboard::Left)) //왼쪽 이동
 	{
-		sprite.setScale(-4.f, 4.f);
+		sprite.setScale(-2.f, 2.f);
 		animation.Play("Walk");		
 	}
 	if (InputMgr::GetKeyUp(Keyboard::Right))
 	{
-		sprite.setScale(4.f, 4.f);
+		sprite.setScale(2.f, 2.f);
 		animation.Play("Idle");
 		animation.PlayQueue("Idle");
 	}
 	if (InputMgr::GetKeyUp(Keyboard::Left))
 	{
-		sprite.setScale(-4.f, 4.f);
+		sprite.setScale(-2.f, 2.f);
 		animation.Play("Idle");
 		animation.PlayQueue("Idle");
 	}
@@ -145,7 +145,7 @@ void Player::UpdateInput()
 	{
 		if (isJump = true)
 		{
-			sprite.setScale(4.f, 4.f);
+			sprite.setScale(2.f, 2.f);
 			animation.Play("Jump");
 			animation.PlayQueue("Idle");
 		}		
@@ -153,11 +153,11 @@ void Player::UpdateInput()
 	}
 	if (InputMgr::GetKeyDown(Keyboard::X)) //대쉬
 	{
-		sprite.setScale(4.f, 4.f);
+		sprite.setScale(2.f, 2.f);
 	}
 	if (InputMgr::GetKeyDown(Keyboard::Z)) // 벽잡기
 	{
-		sprite.setScale(4.f, 4.f);
+		sprite.setScale(2.f, 2.f);
 	}
 
 }
