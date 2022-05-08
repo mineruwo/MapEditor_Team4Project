@@ -11,12 +11,13 @@ void CreateWalls(std::vector<Wall*>& walls, Map& mapdata);
 using namespace sf;
 int main()
 {
-    RenderWindow window(VideoMode(1366, 768), "Map simulator");
+    RenderWindow window(VideoMode(1920, 1200), "Map simulator");
     TextureHolder textureHolder;
     
     int windowMagnification = 3;
-    View mainView(FloatRect(00, 0, 1366 / windowMagnification, 768 / windowMagnification));
-    View uiView(FloatRect(0, 0, 320, 240));
+    View mainView(FloatRect(0, 0, 1920 / windowMagnification, 1200 / windowMagnification));
+
+    View UiView(FloatRect(0, 0, 1920, 1200));
 
     IntRect area;
     area.width = window.getSize().x;
@@ -44,11 +45,9 @@ int main()
 
         while (window.pollEvent(event))
         {
-
             InputMgr::ProcessInput(event);
             if (event.type == Event::Closed)
                 window.close();
-
         }
  
 
@@ -74,7 +73,6 @@ int main()
 
         window.clear();
         window.setView(mainView);
-
         window.draw(grid.Getgrid(), &grid.Gettexgrid());
 
         if (isPlayerInit && dt.asSeconds() <= 1.f / 200.f)

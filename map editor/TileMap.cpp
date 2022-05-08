@@ -36,12 +36,19 @@ bool TileMap::load(const std::string& tileset, sf::Vector2u tileSize, std::vecto
                 break;
             }
          
+           /* if (mapdata[idx] == 89)
+            {
+                idx++;
+                continue;
+            }*/
+
             // 현재 tile 수 가져오기
             int tileNumber = tiles[i + j * width];
 
             // tileset 텍스쳐에서 그 위치 탐색
             int tu = tileNumber % (m_tileset.getSize().x / tileSize.x);
             int tv = tileNumber / (m_tileset.getSize().x / tileSize.x);
+         
 
             // 현재 tile의 quad 포인터 획득
             sf::Vertex* quad = &m_vertices[(i + j * width) * 4];
@@ -51,6 +58,8 @@ bool TileMap::load(const std::string& tileset, sf::Vector2u tileSize, std::vecto
             quad[1].position = sf::Vector2f((i + 1) * tileSize.x, j * tileSize.y);
             quad[2].position = sf::Vector2f((i + 1) * tileSize.x, (j + 1) * tileSize.y);
             quad[3].position = sf::Vector2f(i * tileSize.x, (j + 1) * tileSize.y);
+
+           
 
             // 텍스쳐 좌표 4개 정의
             quad[0].texCoords = sf::Vector2f(tu * tileSize.x, tv * tileSize.y);
