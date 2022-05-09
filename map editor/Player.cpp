@@ -19,7 +19,7 @@ void Player::Init()
 {
 	sprite.setPosition(600,0);
 	sprite.setScale(2.f, 2.f);
-	sprite.setOrigin(0, 32 * 4.f);
+	sprite.setOrigin(0, 32 * 2.f);
 
 	texture.loadFromFile("graphics/player_idle A_B_C.png");
 	animation.SetTarget(&sprite);

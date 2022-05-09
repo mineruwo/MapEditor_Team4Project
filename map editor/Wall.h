@@ -12,6 +12,7 @@ private:
 public:
 	Wall(int top, int left, int width, int height);
 	Wall(FloatRect setwall);
+	
 	void DrawWall(RenderWindow& window);
 	const FloatRect GetWallRect();
 };

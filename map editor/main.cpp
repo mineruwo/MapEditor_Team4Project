@@ -68,9 +68,6 @@ int main()
             area.width =  map.GetMapXSize()[currMap];
             area.height = map.GetMapYSize()[currMap];
             grid.CreateGrid(area);
-
-
-            CreateWalls(walls, map);
         }
         if (InputMgr::GetKeyDown(Keyboard::F4))
         {
@@ -78,12 +75,30 @@ int main()
             isPlayerInit = true;
         }
 
+        if (InputMgr::GetKeyDown(Keyboard::F5))
+        {
+           /* for (auto it : walls)
+            {
+                delete it;
+            }
+
+            for (auto it : map.Getblocks())
+            {
+                delete it;
+            }
+            walls.clear();
+            map.Getblocks().clear();*/
+        }
+
+
         if (isPlayerInit && dt.asSeconds() <= 1.f / 200.f)
         {
             InputMgr::Update(dt.asSeconds());
             player.Update(dt.asSeconds(), walls);
             grid.CreateGrid(area);
         }
+        CreateWalls(walls, map);
+
 
         window.clear();
         window.setView(mainView);
@@ -97,8 +112,6 @@ int main()
         {
             it->DrawWall(window);
         }
-
-        window.setView(UiView);
         map.DrawMap(window);
         window.display();
     }
@@ -127,14 +140,9 @@ void CreateWalls(std::vector<Wall*>& walls, Map& mapdata)
 
         Wall* tile = new Wall(mapdata.Getblocks()[idx]->getGlobalBounds());
         walls.push_back(tile);
-        std::cout << idx << "loaded" << std::endl;
-
-        
 
         idx++;
      
     }
-
-
 
 }

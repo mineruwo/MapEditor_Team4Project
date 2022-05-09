@@ -13,12 +13,13 @@ private:
 	std::vector<int> MapNumber;
 	std::vector<int> MapXSize;
 	std::vector<int> MapYSize;
+	std::vector<std::string> OBJFilePath;
 
 	std::vector<int> ColL;
 	std::vector<int> ColT;
 	std::vector<int> ColW;
 	std::vector<int> ColH;
-	std::vector<std::string> tileDataFilePath;
+
 
 	std::vector<sf::RectangleShape*> blocks;
 

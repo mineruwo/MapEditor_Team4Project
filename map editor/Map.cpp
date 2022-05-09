@@ -7,10 +7,13 @@ Map::Map()
     MapNumber = mapData.GetColumn<int>("MapNumber");
     MapXSize = mapData.GetColumn<int>("MapXSize");
     MapYSize = mapData.GetColumn<int>("MapYSize");
-    //ColL = mapData.GetColumn<int>("ColL");
-    //ColT = mapData.GetColumn<int>("ColT");
-    //ColW = mapData.GetColumn<int>("ColW");
-    //ColH = mapData.GetColumn<int>("ColH");
+    OBJFilePath = mapData.GetColumn<std::string>("OBJFilePath");
+
+
+    /*ColL = mapData.GetColumn<int>("ColL");
+    ColT = mapData.GetColumn<int>("ColT");
+    ColW = mapData.GetColumn<int>("ColW");
+    ColH = mapData.GetColumn<int>("ColH");*/
 
   
    
@@ -75,17 +78,21 @@ void Map::InputMap(int& windowMagnification, View& mainview, Time& dt, RenderWin
 
     if (InputMgr::GetKey(Keyboard::LShift) && InputMgr::GetMouseButtonDown(Mouse::Left))
     {
-        originPos = Mouse::getPosition(window);
+        originPos = Mouse::getPosition(window)/8 * 8;
+        worldPos = window.mapPixelToCoords(originPos);
+
         currDrag = new RectangleShape;
 
         currDrag->setFillColor(Color(255, 0, 0,128));
-        currDrag->setPosition(originPos.x,originPos.y);
+        currDrag->setPosition(worldPos.x/8 * 8,worldPos.y/8 * 8);
         isDrag = true;
     }
     
     if (InputMgr::GetKey(Keyboard::LShift) && InputMgr::GetMouseButton(Mouse::Left)&& isDrag)
     {
-        currDrag->setSize(Vector2f(originPos.x + (Mouse::getPosition(window).x / 8) * 8 -originPos.x, originPos.y +(Mouse::getPosition(window).y / 8) * 8 - originPos.y));
+        worldPos = window.mapPixelToCoords(originPos);
+
+        currDrag->setSize(Vector2f((Mouse::getPosition(window).x/8)*8- worldPos.x, (Mouse::getPosition(window).y / 8)*8- worldPos.y));
     }
 
     if ((InputMgr::GetKeyUp(Keyboard::LShift) || InputMgr::GetMouseButtonUp(Mouse::Left))&&isDrag)
