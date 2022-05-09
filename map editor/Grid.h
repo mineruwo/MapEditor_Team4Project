@@ -9,13 +9,9 @@ private:
 	Texture& texgrid;
 	VertexArray grid;
 
-	Texture& texdirt;
-	VertexArray dirt;
-
 public:
 	Grid();
 	void CreateGrid(IntRect area);
-	void SetVertexdirt();
 
 	Texture& Gettexgrid();
 	VertexArray& Getgrid();

@@ -1,7 +1,7 @@
 #include "Grid.h"
 
 Grid::Grid()
-    :texgrid(TextureHolder::GetTexture("graphics/Grid.png")),texdirt(TextureHolder::GetTexture("graphics/dirt.png"))
+    :texgrid(TextureHolder::GetTexture("graphics/Grid.png"))
 {
 
 }
@@ -50,34 +50,6 @@ void Grid::CreateGrid(IntRect area)
             grid[vertexIndex + 1].texCoords = Vector2f(offset, GRID_SIZE);
             grid[vertexIndex + 2].texCoords = Vector2f(offset + GRID_SIZE, GRID_SIZE);
             grid[vertexIndex + 3].texCoords = Vector2f(offset + GRID_SIZE, 0.f);
-        }
-    }
-}
-
-void Grid::SetVertexdirt()
-{
-    const int DIRT_SIZE = 8;
-    const int DIRT_TYPES = 90;
-
-    dirt.setPrimitiveType(Quads);
-    dirt.resize(15 * 6 * 4);
-
-    for (int r = 0; r < 15; ++r)
-    {
-        for (int c = 0; c < 6; ++c)
-        {
-            int index = r * 6 + c;
-
-            int vertexIndex = index * 4;
-
-            int offsetX = c * DIRT_SIZE;
-            int offsetY = r * DIRT_SIZE;
-
-            dirt[vertexIndex + 0].texCoords = Vector2f(offsetX , offsetY);
-            dirt[vertexIndex + 1].texCoords = Vector2f(offsetX + DIRT_SIZE, offsetY);
-            dirt[vertexIndex + 2].texCoords = Vector2f(offsetX + DIRT_SIZE, offsetY + DIRT_SIZE);
-            dirt[vertexIndex + 3].texCoords = Vector2f(offsetX, offsetY + DIRT_SIZE);
-          
         }
     }
 }

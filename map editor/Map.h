@@ -10,30 +10,40 @@ class Map
 {
 private:
 
-	std::vector<std::string> OBJname;
-	std::vector<int> maxCount;
-	std::vector<int> W;
-	std::vector<int> H;
+	std::vector<int> MapNumber;
+	std::vector<int> MapXSize;
+	std::vector<int> MapYSize;
 
-	std::vector<std::string> dataFilePath;
-	std::vector<std::string> pngFilePath;
+	std::vector<int> ColL;
+	std::vector<int> ColT;
+	std::vector<int> ColW;
+	std::vector<int> ColH;
+	std::vector<std::string> tileDataFilePath;
 
-	std::vector<TileMap> tiles;
-	std::vector<std::vector<int>> mapdate;
-	std::vector <sf::FloatRect> tilesRect;
-	std::vector<int> idxVertex;
+	std::vector<sf::RectangleShape*> blocks;
+
+	Vector2i originPos;
+	Vector2f worldPos;
+
+	bool isDrag = false;
+
+	RectangleShape* currDrag;
+
+
 
 public:
 	Map();
-	void InputMap(int& windowMagnification, View& mainview, Time& dt);
+	void InputMap(int& windowMagnification, View& mainview, Time& dt, RenderWindow& window);
 	void DrawMap(sf::RenderWindow& window);
 
 	void LoadMap();
 	void SaveMap();
 
-	std::vector<TileMap> GeTtiles();
-	std::vector< std::vector<int>> GetMapdate();
-	std::vector<sf::FloatRect> GetRect();
-	std::vector<int> GetIdxVertex();
+
+	std::vector<int> GetMapNumber();
+	std::vector<int> GetMapXSize();
+	std::vector<int> GetMapYSize();
+	std::vector<sf::RectangleShape*> Getblocks();
+	
 };
 

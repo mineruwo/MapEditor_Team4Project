@@ -2,17 +2,21 @@
 
 Map::Map()
 {
-    rapidcsv::Document mapData("data_tables/Tiles/dirt/Mapdata.csv");
+    rapidcsv::Document mapData("data_tables/Maps/Mapdata.csv");
 
-    OBJname = mapData.GetColumn<std::string>("OBJname");
-    maxCount = mapData.GetColumn<int>("MapSize");
-    W = mapData.GetColumn<int>("W");
-    H = mapData.GetColumn<int>("H");
-    dataFilePath = mapData.GetColumn<std::string>("BinFilePath");
-    pngFilePath = mapData.GetColumn<std::string>("PNGsheetFilePath");
+    MapNumber = mapData.GetColumn<int>("MapNumber");
+    MapXSize = mapData.GetColumn<int>("MapXSize");
+    MapYSize = mapData.GetColumn<int>("MapYSize");
+    //ColL = mapData.GetColumn<int>("ColL");
+    //ColT = mapData.GetColumn<int>("ColT");
+    //ColW = mapData.GetColumn<int>("ColW");
+    //ColH = mapData.GetColumn<int>("ColH");
+
+  
+   
 }
 
-void Map::InputMap(int& windowMagnification, View& mainview, Time& dt)
+void Map::InputMap(int& windowMagnification, View& mainview, Time& dt, RenderWindow& window)
 {
     if (InputMgr::GetKeyDown(Keyboard::F3))
     {
@@ -47,7 +51,7 @@ void Map::InputMap(int& windowMagnification, View& mainview, Time& dt)
         mainview.setSize(1366 / windowMagnification, 768 / windowMagnification);
 
     }
-    float offset = 150.f;
+    float offset = 300.f;
 
     if (InputMgr::GetKey(Keyboard::A))
     {
@@ -69,86 +73,73 @@ void Map::InputMap(int& windowMagnification, View& mainview, Time& dt)
         mainview.move(0.f, -1 * offset* dt.asSeconds());
     }
 
+    if (InputMgr::GetKey(Keyboard::LShift) && InputMgr::GetMouseButtonDown(Mouse::Left))
+    {
+        originPos = Mouse::getPosition(window);
+        currDrag = new RectangleShape;
+
+        currDrag->setFillColor(Color(255, 0, 0,128));
+        currDrag->setPosition(originPos.x,originPos.y);
+        isDrag = true;
+    }
+    
+    if (InputMgr::GetKey(Keyboard::LShift) && InputMgr::GetMouseButton(Mouse::Left)&& isDrag)
+    {
+        currDrag->setSize(Vector2f(originPos.x + (Mouse::getPosition(window).x / 8) * 8 -originPos.x, originPos.y +(Mouse::getPosition(window).y / 8) * 8 - originPos.y));
+    }
+
+    if ((InputMgr::GetKeyUp(Keyboard::LShift) || InputMgr::GetMouseButtonUp(Mouse::Left))&&isDrag)
+
+    {
+        RectangleShape* createBlock = new RectangleShape;
+        
+        createBlock->setPosition(currDrag->getPosition());
+        createBlock->setSize(currDrag->getSize());
+
+        blocks.push_back(createBlock);
+
+        delete currDrag;
+        isDrag = false;
+    }
 }
 
 void Map::DrawMap(sf::RenderWindow& window)
 {
-    for (auto it = tiles.begin(); it != tiles.end(); it++)
+ 
+    if (isDrag)
     {
-        window.draw(*it);
+       window.draw(*currDrag);
     }
-
+   
 }
 
 void Map::LoadMap()
 {
- 
-    TileMap tile;
-
-    int idx = 0;
-    int count = 0;
-    std::ifstream ifs;
-
-    tiles.clear();
-    idxVertex.clear();
-
-    while(true)
-    {
-        ifs.open(dataFilePath[idx], std::ifstream::in);
-
-        while (true)
-        {
-            int id;
-            ifs >> id;
-
-            idxVertex.push_back(id);
-
-            count++;
-
-            if (count == maxCount[idx])
-            {
-                break;
-            }
-
-        }
-        // mapdate load
-
-        ifs.close();
-
-        tile.load(pngFilePath[idx], Vector2u(8, 8), idxVertex, W[idx], H[idx], idxVertex);
-
-        tiles.push_back(tile);
-
-        idx++;
-
-        if (idx == 1)
-        {
-            break;
-        }
-
-    }
+    
+    
 }
 
 void Map::SaveMap()
 {
 }
 
-std::vector<TileMap> Map::GeTtiles()
+std::vector<int> Map::GetMapNumber()
 {
-    return tiles;
+    return MapNumber;
 }
 
-std::vector<std::vector<int>> Map::GetMapdate()
+std::vector<int> Map::GetMapXSize()
 {
-    return mapdate;
+    return MapXSize;
 }
 
-std::vector<sf::FloatRect> Map::GetRect()
+std::vector<int> Map::GetMapYSize()
 {
-    return tilesRect;
+    return MapYSize;
 }
 
-std::vector<int> Map::GetIdxVertex()
+std::vector<sf::RectangleShape*> Map::Getblocks()
 {
-    return idxVertex;
+    return blocks;
 }
+

@@ -11,26 +11,27 @@ void CreateWalls(std::vector<Wall*>& walls, Map& mapdata);
 using namespace sf;
 int main()
 {
-    RenderWindow window(VideoMode(1920, 1200), "Map simulator");
+    RenderWindow window(VideoMode(1366, 768), "Map simulator");
     TextureHolder textureHolder;
-    
+     
     int windowMagnification = 3;
-    View mainView(FloatRect(0, 0, 1920 / windowMagnification, 1200 / windowMagnification));
+    View mainView(FloatRect(0, 0, window.getSize().x / windowMagnification, window.getSize().y / windowMagnification));
 
-    View UiView(FloatRect(0, 0, 1920, 1200));
+    View UiView(FloatRect(0, 0, window.getSize().x, window.getSize().y));
 
     IntRect area;
     area.width = window.getSize().x;
     area.height = window.getSize().y;
  
     Grid grid;
-    grid.CreateGrid(area);
 
     Player player;
     bool isPlayerInit = false;
 
     Map map;
     Clock clock;
+
+    int currMap = 0;
 
     std::vector <Wall*> walls;
 
@@ -51,13 +52,25 @@ int main()
         }
  
 
-        map.InputMap(windowMagnification, mainView,dt);
+        map.InputMap(windowMagnification, mainView,dt,window);
        
         
         if (InputMgr::GetKeyDown(Keyboard::F3))
         {
-           CreateWalls(walls, map);
-    
+            std::string mgr;
+            mgr += "Map simulator";
+            mgr += "_CurrMap Number is ";
+            mgr += currMap;
+
+            window.setTitle(mgr);
+
+          // CreateWalls(walls, map);
+            area.width =  map.GetMapXSize()[currMap];
+            area.height = map.GetMapYSize()[currMap];
+            grid.CreateGrid(area);
+
+
+            CreateWalls(walls, map);
         }
         if (InputMgr::GetKeyDown(Keyboard::F4))
         {
@@ -69,6 +82,7 @@ int main()
         {
             InputMgr::Update(dt.asSeconds());
             player.Update(dt.asSeconds(), walls);
+            grid.CreateGrid(area);
         }
 
         window.clear();
@@ -79,7 +93,12 @@ int main()
         {
             window.draw(player.GetSprite());
         }
+        for (auto it : walls)
+        {
+            it->DrawWall(window);
+        }
 
+        window.setView(UiView);
         map.DrawMap(window);
         window.display();
     }
@@ -100,26 +119,17 @@ void CreateWalls(std::vector<Wall*>& walls, Map& mapdata)
 
     while (true)
     {
-        if (mapdata.GetIdxVertex().empty())
+       
+        if (idx == mapdata.Getblocks().size())
         {
             break;
         }
 
-        if (idx == mapdata.GeTtiles()[0].GettilesRect().size())
-        {
-            break;
-        }
-       
-        if (mapdata.GetIdxVertex()[idx] == 89)
-        {
-            idx++;
-            continue;
-        }
-    
-        Wall* tile = new Wall(mapdata.GeTtiles()[0].GettilesRect()[idx]);
+        Wall* tile = new Wall(mapdata.Getblocks()[idx]->getGlobalBounds());
         walls.push_back(tile);
         std::cout << idx << "loaded" << std::endl;
 
+        
 
         idx++;
      
