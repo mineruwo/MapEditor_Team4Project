@@ -36,7 +36,7 @@ int main()
     std::vector <Wall*> walls;
 
     CreateWalls(walls, map);
-
+    
     while (window.isOpen())
     {
         Event event;

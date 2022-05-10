@@ -13,13 +13,10 @@ void TileMap::draw(sf::RenderTarget& target, sf::RenderStates states) const
     target.draw(m_vertices, states);
 }
 
-bool TileMap::load(const std::string& tileset, sf::Vector2u tileSize, std::vector<int> tiles, unsigned int width, unsigned int height, std::vector<int> mapdata)
+bool TileMap::load(const std::string& tileset, sf::Vector2u tileSize, std::vector<int> tiles, unsigned int width, unsigned int height, Vector2f pos)
 {
-    // tileset 텍스쳐 로딩
     if (!m_tileset.loadFromFile(tileset))
-    {
         return false;
-    }
 
     // vertex array의 사이즈를 그 level의 사이즈에 맞게 조정
     m_vertices.setPrimitiveType(sf::Quads);
@@ -31,16 +28,7 @@ bool TileMap::load(const std::string& tileset, sf::Vector2u tileSize, std::vecto
     {
         for (unsigned int j = 0; j < height; ++j)
         {
-            if (idx >= mapdata.size())
-            {
-                break;
-            }
-         
-           /* if (mapdata[idx] == 89)
-            {
-                idx++;
-                continue;
-            }*/
+          
 
             // 현재 tile 수 가져오기
             int tileNumber = tiles[i + j * width];
@@ -54,12 +42,10 @@ bool TileMap::load(const std::string& tileset, sf::Vector2u tileSize, std::vecto
             sf::Vertex* quad = &m_vertices[(i + j * width) * 4];
 
             // 4개의 코너 정의
-            quad[0].position = sf::Vector2f(i * tileSize.x, j * tileSize.y);
-            quad[1].position = sf::Vector2f((i + 1) * tileSize.x, j * tileSize.y);
-            quad[2].position = sf::Vector2f((i + 1) * tileSize.x, (j + 1) * tileSize.y);
-            quad[3].position = sf::Vector2f(i * tileSize.x, (j + 1) * tileSize.y);
-
-           
+            quad[0].position = sf::Vector2f(i * tileSize.x + pos.x, j * tileSize.y + pos.y);
+            quad[1].position = sf::Vector2f((i + 1) * tileSize.x + pos.x, j * tileSize.y + pos.y);
+            quad[2].position = sf::Vector2f((i + 1) * tileSize.x + pos.x, (j + 1) * tileSize.y + pos.y);
+            quad[3].position = sf::Vector2f(i * tileSize.x + pos.x, (j + 1) * tileSize.y + pos.y);
 
             // 텍스쳐 좌표 4개 정의
             quad[0].texCoords = sf::Vector2f(tu * tileSize.x, tv * tileSize.y);
@@ -67,9 +53,6 @@ bool TileMap::load(const std::string& tileset, sf::Vector2u tileSize, std::vecto
             quad[2].texCoords = sf::Vector2f((tu + 1) * tileSize.x, (tv + 1) * tileSize.y);
             quad[3].texCoords = sf::Vector2f(tu * tileSize.x, (tv + 1) * tileSize.y);
 
-           
-            tilesSetRect.push_back(m_vertices.getBounds());
-            
             std::cout << "set [" << i << "]" << "[" << j << "]" << std::endl;
             idx++;
         }
@@ -83,10 +66,6 @@ VertexArray TileMap::GetVertexArray()
     return m_vertices;
 }
 
-std::vector<FloatRect> TileMap::GettilesRect()
-{
-    return tilesSetRect;
-}
 
 
 

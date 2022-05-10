@@ -3,6 +3,9 @@
 #include "InputMgr.h"
 #include "rapidcsv.h"
 #include <vector>
+#include <fstream>
+#include <iostream>
+#include <string.h>
 #include "Grid.h"
 #include "TileMap.h"
 
@@ -15,6 +18,7 @@ private:
 	std::vector<int> MapYSize;
 	std::vector<std::string> OBJFilePath;
 
+	std::vector<int> ColObjNum;
 	std::vector<int> ColL;
 	std::vector<int> ColT;
 	std::vector<int> ColW;

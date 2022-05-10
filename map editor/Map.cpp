@@ -10,13 +10,16 @@ Map::Map()
     OBJFilePath = mapData.GetColumn<std::string>("OBJFilePath");
 
 
-    /*ColL = mapData.GetColumn<int>("ColL");
-    ColT = mapData.GetColumn<int>("ColT");
-    ColW = mapData.GetColumn<int>("ColW");
-    ColH = mapData.GetColumn<int>("ColH");*/
-
-  
-   
+    for (auto it : OBJFilePath)
+    {
+        rapidcsv::Document objData(it);
+        ColObjNum = objData.GetColumn<int>("ColObjNum");
+        ColL = objData.GetColumn<int>("ColL");
+        ColT = objData.GetColumn<int>("ColT");
+        ColW = objData.GetColumn<int>("ColW");
+        ColH = objData.GetColumn<int>("ColH");
+    }
+    
 }
 
 void Map::InputMap(int& windowMagnification, View& mainview, Time& dt, RenderWindow& window)
@@ -84,7 +87,7 @@ void Map::InputMap(int& windowMagnification, View& mainview, Time& dt, RenderWin
         currDrag = new RectangleShape;
 
         currDrag->setFillColor(Color(255, 0, 0,128));
-        currDrag->setPosition(worldPos.x/8 * 8,worldPos.y/8 * 8);
+        currDrag->setPosition(worldPos.x/8 * 8, worldPos.y/8 * 8);
         isDrag = true;
     }
     
@@ -93,6 +96,11 @@ void Map::InputMap(int& windowMagnification, View& mainview, Time& dt, RenderWin
         worldPos = window.mapPixelToCoords(originPos);
 
         currDrag->setSize(Vector2f((Mouse::getPosition(window).x/8)*8- worldPos.x, (Mouse::getPosition(window).y / 8)*8- worldPos.y));
+    }
+
+    if (isDrag && InputMgr::GetMouseButton(Mouse::Right))
+    {
+        isDrag = false;
     }
 
     if ((InputMgr::GetKeyUp(Keyboard::LShift) || InputMgr::GetMouseButtonUp(Mouse::Left))&&isDrag)
@@ -122,12 +130,36 @@ void Map::DrawMap(sf::RenderWindow& window)
 
 void Map::LoadMap()
 {
-    
+    int idx = 0;
+    for (auto it : ColObjNum)
+    {
+        RectangleShape* createBlock = new RectangleShape;
+
+        createBlock->setPosition(ColL[idx], ColT[idx]);
+        createBlock->setSize(Vector2f(ColW[idx],ColH[idx]));
+        
+        blocks.push_back(createBlock);
+
+        idx++;
+    }
     
 }
 
 void Map::SaveMap()
 {
+    fstream fs;
+
+    int idx = 0;
+    for (auto it : OBJFilePath)
+    {
+        fs.open(it, ios::app);
+        
+        for (auto it2 : blocks)
+        {
+            fs  << idx << "," << it2->getGlobalBounds().left << "," << it2->getGlobalBounds().top << "," << it2->getGlobalBounds().width << "," << it2->getGlobalBounds().height << ",";
+            idx++;
+        }
+    }
 }
 
 std::vector<int> Map::GetMapNumber()
