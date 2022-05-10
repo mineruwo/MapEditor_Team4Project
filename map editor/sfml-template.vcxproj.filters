@@ -54,6 +54,9 @@
     <ClCompile Include="AnimationClip.cpp">
       <Filter>NewFilter1</Filter>
     </ClCompile>
+    <ClCompile Include="Framework.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="InputMgr.h">
@@ -91,6 +94,9 @@
     </ClInclude>
     <ClInclude Include="AnimationController.h">
       <Filter>NewFilter1</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

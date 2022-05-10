@@ -150,6 +150,7 @@
   <ItemGroup>
     <ClCompile Include="AnimationClip.cpp" />
     <ClCompile Include="AnimationController.cpp" />
+    <ClCompile Include="Framework.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="InputMgr.cpp" />
@@ -164,6 +165,7 @@
   <ItemGroup>
     <ClInclude Include="AnimationClip.h" />
     <ClInclude Include="AnimationController.h" />
+    <ClInclude Include="Framework.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="InputMgr.h" />

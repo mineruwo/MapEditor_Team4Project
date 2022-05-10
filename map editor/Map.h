@@ -29,7 +29,7 @@ private:
 
 	Vector2i originPos;
 	Vector2f worldPos;
-
+	Vector2f currworldPos;
 	bool isDrag = false;
 
 	RectangleShape* currDrag;
@@ -38,8 +38,9 @@ private:
 
 public:
 	Map();
-	void InputMap(int& windowMagnification, View& mainview, Time& dt, RenderWindow& window);
-	void DrawMap(sf::RenderWindow& window);
+	void InputMap(int& windowMagnification, View& mainview, Time& dt);
+	void DragMap(RenderWindow& window);
+	void DrawMap(sf::RenderWindow & window);
 
 	void LoadMap();
 	void SaveMap();

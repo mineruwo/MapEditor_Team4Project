@@ -17,7 +17,7 @@ Player::Player()
 ================================*/
 void Player::Init()
 {
-	sprite.setPosition(600,0);
+	sprite.setPosition(0,300);
 	sprite.setScale(2.f, 2.f);
 	sprite.setOrigin(0, 32 * 2.f);
 
@@ -174,7 +174,7 @@ void Player::Update(float dt, std::vector<Wall*> &walls)
 		gravityV += gravity * dt;
 		position.y += gravityV * dt;
 
-		if (sprite.getPosition().y > 500)
+		if (sprite.getPosition().y > 700)
 		{
 			position.y = 0;
 			gravityV = 0;

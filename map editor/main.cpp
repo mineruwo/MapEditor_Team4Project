@@ -6,6 +6,7 @@
 #include "Map.h"
 #include "Player.h"
 #include "Wall.h"
+#include "GUI.h"
 
 void CreateWalls(std::vector<Wall*>& walls, Map& mapdata);
 using namespace sf;
@@ -24,7 +25,7 @@ int main()
     area.height = window.getSize().y;
  
     Grid grid;
-
+    GUI ui;
     Player player;
     bool isPlayerInit = false;
 
@@ -52,7 +53,8 @@ int main()
         }
  
 
-        map.InputMap(windowMagnification, mainView,dt,window);
+        map.InputMap(windowMagnification, mainView,dt);
+        map.DragMap(window);
        
         
         if (InputMgr::GetKeyDown(Keyboard::F3))
@@ -112,7 +114,9 @@ int main()
         {
             it->DrawWall(window);
         }
+
         map.DrawMap(window);
+
         window.display();
     }
 

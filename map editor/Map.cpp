@@ -22,7 +22,7 @@ Map::Map()
     
 }
 
-void Map::InputMap(int& windowMagnification, View& mainview, Time& dt, RenderWindow& window)
+void Map::InputMap(int& windowMagnification, View& mainview, Time& dt)
 {
     if (InputMgr::GetKeyDown(Keyboard::F3))
     {
@@ -57,45 +57,72 @@ void Map::InputMap(int& windowMagnification, View& mainview, Time& dt, RenderWin
         mainview.setSize(1366 / windowMagnification, 768 / windowMagnification);
 
     }
-    float offset = 300.f;
+    float offset = 32.f;
 
-    if (InputMgr::GetKey(Keyboard::A))
+    if (InputMgr::GetKeyDown(Keyboard::A))
     {
 
-        mainview.move(-1 * offset * dt.asSeconds(), 0.f);
+        mainview.move(-1 * offset, 0.f);
       
     }
-    if (InputMgr::GetKey(Keyboard::D))
+    if (InputMgr::GetKeyDown(Keyboard::D))
     {
-        mainview.move(offset * dt.asSeconds(), 0.f);
+        mainview.move(offset, 0.f);
     }
 
-    if (InputMgr::GetKey(Keyboard::S))
+    if (InputMgr::GetKeyDown(Keyboard::S))
     {
-        mainview.move(0.f, offset * dt.asSeconds());
+        mainview.move(0.f, offset );
     }
-    if (InputMgr::GetKey(Keyboard::W))
+    if (InputMgr::GetKeyDown(Keyboard::W))
     {
-        mainview.move(0.f, -1 * offset* dt.asSeconds());
+        mainview.move(0.f, -1 * offset);
     }
 
+    if (InputMgr::GetKeyDown(Keyboard::BackSpace))
+    {
+
+        if (!blocks.empty())
+        {
+            blocks.pop_back();
+
+        }
+
+        
+    }
+
+ 
+}
+
+void Map::DragMap(RenderWindow& window)
+{
     if (InputMgr::GetKey(Keyboard::LShift) && InputMgr::GetMouseButtonDown(Mouse::Left))
     {
-        originPos = Mouse::getPosition(window)/8 * 8;
+        originPos.x = (int)(Mouse::getPosition(window).x) ;
+        originPos.y = (int)(Mouse::getPosition(window).y) ;
         worldPos = window.mapPixelToCoords(originPos);
+
+
+        cout << "world : " << (int)worldPos.x/8 * 8 << " " << (int)worldPos.y / 8 * 8 << endl;
+        cout << "origin : " << originPos.x << " " << originPos.y << endl;
 
         currDrag = new RectangleShape;
 
-        currDrag->setFillColor(Color(255, 0, 0,128));
-        currDrag->setPosition(worldPos.x/8 * 8, worldPos.y/8 * 8);
+        currDrag->setFillColor(Color(255, 0, 0, 128));
+        currDrag->setPosition((int)worldPos.x / 8 * 8, (int)worldPos.y / 8 * 8);
         isDrag = true;
     }
-    
-    if (InputMgr::GetKey(Keyboard::LShift) && InputMgr::GetMouseButton(Mouse::Left)&& isDrag)
-    {
-        worldPos = window.mapPixelToCoords(originPos);
 
-        currDrag->setSize(Vector2f((Mouse::getPosition(window).x/8)*8- worldPos.x, (Mouse::getPosition(window).y / 8)*8- worldPos.y));
+    if (InputMgr::GetKey(Keyboard::LShift) && InputMgr::GetMouseButton(Mouse::Left) && isDrag)
+    {
+        Vector2i currMousePos;
+
+        currMousePos.x = (int)Mouse::getPosition(window).x;
+        currMousePos.y = (int)Mouse::getPosition(window).y;
+
+       currworldPos = window.mapPixelToCoords(currMousePos);
+
+        currDrag->setSize(Vector2f((int)currworldPos.x / 8 * 8, (int)currworldPos.y / 8 * 8));
     }
 
     if (isDrag && InputMgr::GetMouseButton(Mouse::Right))
@@ -103,11 +130,11 @@ void Map::InputMap(int& windowMagnification, View& mainview, Time& dt, RenderWin
         isDrag = false;
     }
 
-    if ((InputMgr::GetKeyUp(Keyboard::LShift) || InputMgr::GetMouseButtonUp(Mouse::Left))&&isDrag)
+    if ((InputMgr::GetKeyUp(Keyboard::LShift) || InputMgr::GetMouseButtonUp(Mouse::Left)) && isDrag)
 
     {
         RectangleShape* createBlock = new RectangleShape;
-        
+
         createBlock->setPosition(currDrag->getPosition());
         createBlock->setSize(currDrag->getSize());
 
@@ -156,9 +183,12 @@ void Map::SaveMap()
         
         for (auto it2 : blocks)
         {
-            fs  << idx << "," << it2->getGlobalBounds().left << "," << it2->getGlobalBounds().top << "," << it2->getGlobalBounds().width << "," << it2->getGlobalBounds().height << ",";
+            fs  << idx << "," << it2->getGlobalBounds().left << "," << it2->getGlobalBounds().top << ","
+                << it2->getGlobalBounds().width << "," << it2->getGlobalBounds().height << ","<< endl;
             idx++;
         }
+
+        fs.close();
     }
 }
 
