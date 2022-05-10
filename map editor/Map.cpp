@@ -1,4 +1,6 @@
 #include "Map.h"
+#define TILEDRAWSIZE 16;
+
 
 Map::Map()
 {
@@ -87,11 +89,8 @@ void Map::InputMap(int& windowMagnification, View& mainview, Time& dt)
             blocks.pop_back();
 
         }
-
-        
     }
 
- 
 }
 
 void Map::DragMap(RenderWindow& window)
@@ -103,13 +102,13 @@ void Map::DragMap(RenderWindow& window)
         worldPos = window.mapPixelToCoords(originPos);
 
 
-        cout << "world : " << (int)worldPos.x/8 * 8 << " " << (int)worldPos.y / 8 * 8 << endl;
+        cout << "world : " << (int)worldPos.x/16 * 16 << " " << (int)worldPos.y /16 * 16 << endl;
         cout << "origin : " << originPos.x << " " << originPos.y << endl;
 
         currDrag = new RectangleShape;
 
         currDrag->setFillColor(Color(255, 0, 0, 128));
-        currDrag->setPosition((int)worldPos.x / 8 * 8, (int)worldPos.y / 8 * 8);
+        currDrag->setPosition((int)(worldPos.x / 16)* 16, (int)(worldPos.y / 16) * 16);
         isDrag = true;
     }
 
@@ -122,7 +121,11 @@ void Map::DragMap(RenderWindow& window)
 
        currworldPos = window.mapPixelToCoords(currMousePos);
 
-        currDrag->setSize(Vector2f((int)currworldPos.x / 8 * 8, (int)currworldPos.y / 8 * 8));
+        currDrag->setSize(Vector2f((int)(floor(currworldPos.x - worldPos.x) / 16) * 16 , (int)(floor(currworldPos.y - worldPos.y))/ 16 * 16 ));
+
+        cout << "curr World drag " << (int)(floor(currworldPos.x - worldPos.x) / 16) * 16 <<" " << (int)floor(currworldPos.y - worldPos.y) / 16 * 16  << endl;
+
+        cout << "curr mouse Pos " << currMousePos.x << " " << currMousePos.y << endl;
     }
 
     if (isDrag && InputMgr::GetMouseButton(Mouse::Right))

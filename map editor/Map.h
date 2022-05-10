@@ -45,7 +45,6 @@ public:
 	void LoadMap();
 	void SaveMap();
 
-
 	std::vector<int> GetMapNumber();
 	std::vector<int> GetMapXSize();
 	std::vector<int> GetMapYSize();

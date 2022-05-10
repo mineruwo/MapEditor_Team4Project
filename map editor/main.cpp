@@ -14,23 +14,30 @@ int main()
 {
     RenderWindow window(VideoMode(1366, 768), "Map simulator");
     TextureHolder textureHolder;
-     
-    int windowMagnification = 3;
-    View mainView(FloatRect(0, 0, window.getSize().x / windowMagnification, window.getSize().y / windowMagnification));
-
-    View UiView(FloatRect(0, 0, window.getSize().x, window.getSize().y));
 
     IntRect area;
     area.width = window.getSize().x;
     area.height = window.getSize().y;
+     
+    int windowMagnification = 2;
+
+    View mainView(FloatRect(736, 256, area.width / windowMagnification, area.height / windowMagnification));
+    View UiView = window.getDefaultView();
+    
+
+    GUI ui;
  
     Grid grid;
-    GUI ui;
+
+
     Player player;
     bool isPlayerInit = false;
 
     Map map;
     Clock clock;
+
+    float stringTimer = 0.f;
+    bool isStringPrint = false;
 
     int currMap = 0;
 
@@ -56,7 +63,26 @@ int main()
         map.InputMap(windowMagnification, mainView,dt);
         map.DragMap(window);
        
+        if (isStringPrint)
+        {
+            stringTimer += dt.asSeconds();
+            if (stringTimer >= 2.f)
+            {
+                stringTimer = 0.f;
+                isStringPrint = false;
+            }
+        }
+
         
+        if (InputMgr::GetKeyDown(Keyboard::F2))
+        {
+            ui.SetString("Save MapData");
+            window.setView(UiView);
+            ui.DrawString(window);
+            isStringPrint = true;
+            stringTimer = 0.f;
+        }
+
         if (InputMgr::GetKeyDown(Keyboard::F3))
         {
             std::string mgr;
@@ -66,34 +92,26 @@ int main()
 
             window.setTitle(mgr);
 
-          // CreateWalls(walls, map);
             area.width =  map.GetMapXSize()[currMap];
             area.height = map.GetMapYSize()[currMap];
             grid.CreateGrid(area);
+            ui.SetString("Create Grid & Load Mapdata");
+            isStringPrint = true;
+            stringTimer = 0.f;
         }
         if (InputMgr::GetKeyDown(Keyboard::F4))
         {
             player.Init();
             isPlayerInit = true;
-        }
-
-        if (InputMgr::GetKeyDown(Keyboard::F5))
-        {
-           /* for (auto it : walls)
-            {
-                delete it;
-            }
-
-            for (auto it : map.Getblocks())
-            {
-                delete it;
-            }
-            walls.clear();
-            map.Getblocks().clear();*/
+            ui.SetString("Player Spawn");
+            window.setView(UiView);
+            ui.DrawString(window);
+            isStringPrint = true;
+            stringTimer = 0.f;
         }
 
 
-        if (isPlayerInit && dt.asSeconds() <= 1.f / 200.f)
+        if (isPlayerInit && dt.asSeconds() <= 1.f / 60.f)
         {
             InputMgr::Update(dt.asSeconds());
             player.Update(dt.asSeconds(), walls);
@@ -101,12 +119,15 @@ int main()
         }
         CreateWalls(walls, map);
 
+        ui.InputUi();
+        ui.ShowGUIMenu(dt.asSeconds());
+
 
         window.clear();
         window.setView(mainView);
         window.draw(grid.Getgrid(), &grid.Gettexgrid());
 
-        if (isPlayerInit && dt.asSeconds() <= 1.f / 200.f)
+        if (isPlayerInit && dt.asSeconds() <= 1.f / 60.f)
         {
             window.draw(player.GetSprite());
         }
@@ -117,6 +138,14 @@ int main()
 
         map.DrawMap(window);
 
+        window.setView(UiView);
+        if (isStringPrint)
+        {
+            ui.DrawString(window);
+        }
+
+        ui.DrawUI(window);
+        window.setView(mainView);
         window.display();
     }
 
