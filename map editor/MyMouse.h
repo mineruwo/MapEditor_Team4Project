@@ -13,7 +13,7 @@ private:
 	Vector2i mousePosScreen;
 	Vector2i mousePosWindow;
 	Vector2f mousePosView;
-	Vector2u mousePosGrid;
+	Vector2i mousePosGrid;
 
 	Font font;
 	Text posText;
@@ -31,7 +31,7 @@ public:
 	Vector2i GetmousePosScreen();
 	Vector2i GetmousePosWindow();
 	Vector2f GetmousePosView();
-	Vector2u GetmousePosGrid();
+	Vector2i GetmousePosGrid();
 
 
 };

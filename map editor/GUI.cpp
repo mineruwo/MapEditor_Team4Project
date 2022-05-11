@@ -1,11 +1,10 @@
 #include "GUI.h"
 
-GUI::GUI()
+GUI::GUI() :defaultTileKey(0)
 {
 	menuBar.setTexture(TextureHolder::GetTexture("graphics/UIopenMenuBar.png"));
 	menuBar.setPosition(1270, 768 * 0.5 - 100);
 	
-
 	tileButton.setTexture(TextureHolder::GetTexture("graphics/TileButton.png"));
 
 	objButtion.setTexture(TextureHolder::GetTexture("graphics/OBJButton.png"));
@@ -22,6 +21,30 @@ GUI::GUI()
 	UiText.setPosition(Vector2f(0, 50));
 	UiText.setCharacterSize(30);
 	UiText.setFillColor(Color(0, 0, 240));
+
+	rapidcsv::Document tileMapdata("data_tables/Tiles/tilesets.csv");
+
+	std::vector<int> setTileKey = tileMapdata.GetColumn<int>("Key");
+	std::vector<std::string> setTileValue = tileMapdata.GetColumn<std::string>("TileFilePath");
+
+	
+	for(int idx = 0; idx < setTileKey.size();idx++)
+	{
+		tileMapFilePaths.insert(std::pair<tilesets,std::string>(tilesets(setTileKey[idx]), setTileValue[idx]));
+
+	}
+
+	rapidcsv::Document objsData("data_tables/obj/objs.csv");
+	std::vector<std::string> setObjsKey = objsData.GetColumn<std::string>("Key");
+	std::vector<std::string> setObjsValue = objsData.GetColumn<std::string>("ObjFilePath");
+
+
+	for (int idx = 0; idx < setObjsKey.size(); idx++)
+	{
+		objFilePaths.insert(std::pair<std::string, std::string>(setObjsKey[idx], setObjsValue[idx]));
+
+	}
+
 }
 
 void GUI::InputUi()
@@ -51,32 +74,28 @@ void GUI::DrawString(RenderWindow& window)
 
 void GUI::ClickButton(MyMouse& mouse)
 {
-	if(tileButton.getGlobalBounds().contains(mouse.GetMouseBox().getPosition()))
+	if(tileButton.getGlobalBounds().contains(mouse.GetmousePosWindow().x,mouse.GetmousePosWindow().y) && InputMgr::GetMouseButtonDown(Mouse::Left))
 	{
-		std::cout << " tileButton set" << std::endl;
-	}
-
-	if (InputMgr::GetKeyDown(Keyboard::G))
-	{
-		std::cout << "curr tilebutton gbound.L" << tileButton.getGlobalBounds().left << endl;
-
-		std::cout << "curr tilebutton gbound.T" << tileButton.getGlobalBounds().top << endl;
-
-		std::cout << "curr tilebutton gbound.W" << tileButton.getGlobalBounds().width << endl;
-
-		std::cout << "curr tilebutton gbound.H" << tileButton.getGlobalBounds().height << endl;
-
-		std::cout << "curr mouse Ggetpoint 0.x" << mouse.GetMouseBox().getPoint(0).x << endl;
-		std::cout << "curr mouse Ggetpoint 0.y" << mouse.GetMouseBox().getPoint(0).y << endl;
-
-		std::cout << "curr mouse getPos.x" << mouse.GetMouseBox().getPosition().x << endl;
-		std::cout << "curr mouse getPos.y" << mouse.GetMouseBox().getPosition().y << endl;
-	
-
+		isObjset = false;
+		isTileset = true;
 
 
 	}
-	
+
+	if (objButtion.getGlobalBounds().contains(mouse.GetmousePosWindow().x, mouse.GetmousePosWindow().y) && InputMgr::GetMouseButtonDown(Mouse::Left))
+	{
+		isObjset = true;
+		isTileset = false;
+	}
+
+	if (menuBar.getGlobalBounds().contains(mouse.GetmousePosWindow().x, mouse.GetmousePosWindow().y) && InputMgr::GetMouseButtonDown(Mouse::Left) && !isMenuOpen)
+	{
+		isMenuOpen = true;
+	}
+	if (menuBar.getGlobalBounds().contains(mouse.GetmousePosWindow().x, mouse.GetmousePosWindow().y) && InputMgr::GetMouseButtonDown(Mouse::Left) && isMenuOpen)
+	{
+		isMenuClose = true;
+	}
 }
 
 
@@ -122,6 +141,23 @@ void GUI::ShowGUIMenu(float dt)
 	{
 		isMenuClose = false;
 	}
+
+
+	if (isTileset)
+	{
+		
+		loadTileSetButton();
+	}
+
+	if (isObjset)
+	{
+		for (auto it : tileSetButton)
+		{
+			delete it;
+		}
+		tileSetButton.clear();
+
+	}
 }
 
 void GUI::DrawUI(RenderWindow& window)
@@ -130,4 +166,23 @@ void GUI::DrawUI(RenderWindow& window)
 	window.draw(menuInterface);
 	window.draw(tileButton);
 	window.draw(objButtion);
+}
+
+void GUI::loadTileSetButton()
+{
+	for (auto it : tileSetButton)
+	{
+		delete it;
+	}
+
+	tileSetButton.clear();
+
+
+	int idx = 0;
+	std::string path;
+
+	path += TilePath;
+	path += tileMapFilePaths.at(tilesets(defaultTileKey));
+
+	
 }

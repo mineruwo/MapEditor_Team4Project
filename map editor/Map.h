@@ -8,6 +8,7 @@
 #include <string.h>
 #include "Grid.h"
 #include "TileMap.h"
+#include "MyMouse.h"
 
 class Map
 {
@@ -39,7 +40,7 @@ private:
 public:
 	Map();
 	void InputMap(int& windowMagnification, View& mainview, Time& dt);
-	void DragMap(RenderWindow& window);
+	void DragMap(RenderWindow& window, MyMouse& mouse);
 	void DrawMap(sf::RenderWindow & window);
 
 	void LoadMap();

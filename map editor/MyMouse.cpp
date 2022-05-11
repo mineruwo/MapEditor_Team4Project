@@ -6,8 +6,8 @@ void MyMouse::initMouse()
 	mouseBox.setFillColor(Color(100, 100, 150, 130));
 	font.loadFromFile("graphics/RobotoFlex-Regular.ttf");
 	posText.setFont(font);
-	posText.setCharacterSize(10);
-	posText.setFillColor(Color(175, 100, 100, 130));
+	posText.setCharacterSize(7);
+	posText.setFillColor(Color(0, 255, 100));
 
 }
 
@@ -17,10 +17,10 @@ void MyMouse::updateMouse(RenderWindow& window, IntRect area)
 	mousePosWindow = Mouse::getPosition(window);
 	mousePosView = window.mapPixelToCoords(mousePosWindow);
 
-	if (mousePosView.x >= 0.f && mousePosView.y >= 0.f && mousePosView.x <= area.width * 32 && mousePosView.y <= area.height * 32)
+	if (mousePosView.x >= 0.f && mousePosView.y >= 0.f && mousePosView.x <= area.width * 16 && mousePosView.y <= area.height * 16)
 	{
-		mousePosGrid.x = mousePosView.x / 32;
-		mousePosGrid.y = mousePosView.y / 32;
+		mousePosGrid.x = mousePosView.x / 16;
+		mousePosGrid.y = mousePosView.y / 16;
 	}
 	
 
@@ -90,7 +90,7 @@ Vector2f MyMouse::GetmousePosView()
 	return mousePosView;
 }
 
-Vector2u MyMouse::GetmousePosGrid()
+Vector2i MyMouse::GetmousePosGrid()
 {
 	return mousePosGrid;
 }

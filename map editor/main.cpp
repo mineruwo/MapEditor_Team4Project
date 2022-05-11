@@ -64,16 +64,9 @@ int main()
         }
 
         map.InputMap(windowMagnification, mainView, dt);
-        map.DragMap(window);
+        map.DragMap(window,mouse);
         mouse.updateMouse(window, area);
 
-        if (InputMgr::GetKeyDown(Keyboard::H))
-        {
-            cout << mouse.GetMouseBox().getPosition().x << endl;
-            cout << mouse.GetMouseBox().getPosition().y << endl;
-        }
-
-    
         if(isStringPrint)
         {
             stringTimer += dt.asSeconds();
@@ -84,7 +77,6 @@ int main()
             }
         }
 
-        
         if (InputMgr::GetKeyDown(Keyboard::F2))
         {
             ui.SetString("Save MapData");
@@ -110,6 +102,7 @@ int main()
             isStringPrint = true;
             stringTimer = 0.f;
         }
+
         if (InputMgr::GetKeyDown(Keyboard::F4))
         {
             player.Init();
@@ -120,7 +113,6 @@ int main()
             isStringPrint = true;
             stringTimer = 0.f;
         }
-
 
         if (isPlayerInit && dt.asSeconds() <= 1.f / 60.f)
         {
@@ -133,7 +125,6 @@ int main()
         ui.InputUi();
         ui.ShowGUIMenu(dt.asSeconds());
         ui.ClickButton(mouse);
-
 
         window.clear();
         window.setView(mainView);

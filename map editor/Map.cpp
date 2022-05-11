@@ -93,7 +93,7 @@ void Map::InputMap(int& windowMagnification, View& mainview, Time& dt)
 
 }
 
-void Map::DragMap(RenderWindow& window)
+void Map::DragMap(RenderWindow& window,MyMouse& mouse)
 {
     if (InputMgr::GetKey(Keyboard::LShift) && InputMgr::GetMouseButtonDown(Mouse::Left))
     {
