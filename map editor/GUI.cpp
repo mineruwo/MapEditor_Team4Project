@@ -49,6 +49,36 @@ void GUI::DrawString(RenderWindow& window)
 	window.draw(UiText);
 }
 
+void GUI::ClickButton(MyMouse& mouse)
+{
+	if(tileButton.getGlobalBounds().contains(mouse.GetMouseBox().getPosition()))
+	{
+		std::cout << " tileButton set" << std::endl;
+	}
+
+	if (InputMgr::GetKeyDown(Keyboard::G))
+	{
+		std::cout << "curr tilebutton gbound.L" << tileButton.getGlobalBounds().left << endl;
+
+		std::cout << "curr tilebutton gbound.T" << tileButton.getGlobalBounds().top << endl;
+
+		std::cout << "curr tilebutton gbound.W" << tileButton.getGlobalBounds().width << endl;
+
+		std::cout << "curr tilebutton gbound.H" << tileButton.getGlobalBounds().height << endl;
+
+		std::cout << "curr mouse Ggetpoint 0.x" << mouse.GetMouseBox().getPoint(0).x << endl;
+		std::cout << "curr mouse Ggetpoint 0.y" << mouse.GetMouseBox().getPoint(0).y << endl;
+
+		std::cout << "curr mouse getPos.x" << mouse.GetMouseBox().getPosition().x << endl;
+		std::cout << "curr mouse getPos.y" << mouse.GetMouseBox().getPosition().y << endl;
+	
+
+
+
+	}
+	
+}
+
 
 void GUI::ShowGUIMenu(float dt)
 {
@@ -57,7 +87,7 @@ void GUI::ShowGUIMenu(float dt)
 	if (isMenuOpen)
 	{
 	
-		int offset = 200;
+		int offset = 300;
 		menuBar.move(offset * dt * -1.f, 0);
 
 		menuInterface.move(offset * dt * -1.f, 0);
@@ -70,7 +100,7 @@ void GUI::ShowGUIMenu(float dt)
 
 	if (isMenuClose)
 	{
-		int offset = 200;
+		int offset = 300;
 
 		menuBar.move(offset * dt * 1.f, 0);
 

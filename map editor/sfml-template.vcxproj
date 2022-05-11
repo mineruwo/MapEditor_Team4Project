@@ -152,9 +152,11 @@
     <ClCompile Include="AnimationController.cpp" />
     <ClCompile Include="Framework.cpp" />
     <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="Ground.cpp" />
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="InputMgr.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="MyMouse.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="TextureHolder.cpp" />
@@ -167,9 +169,11 @@
     <ClInclude Include="AnimationController.h" />
     <ClInclude Include="Framework.h" />
     <ClInclude Include="Grid.h" />
+    <ClInclude Include="Ground.h" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="InputMgr.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="MyMouse.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="rapidcsv.h" />
     <ClInclude Include="TextureHolder.h" />

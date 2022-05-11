@@ -57,6 +57,12 @@
     <ClCompile Include="Framework.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Ground.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MyMouse.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="InputMgr.h">
@@ -96,6 +102,12 @@
       <Filter>NewFilter1</Filter>
     </ClInclude>
     <ClInclude Include="Framework.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Ground.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MyMouse.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

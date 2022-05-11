@@ -59,26 +59,26 @@ void Map::InputMap(int& windowMagnification, View& mainview, Time& dt)
         mainview.setSize(1366 / windowMagnification, 768 / windowMagnification);
 
     }
-    float offset = 32.f;
+    float offset = 320.f;
 
-    if (InputMgr::GetKeyDown(Keyboard::A))
+    if (InputMgr::GetKey(Keyboard::A))
     {
 
-        mainview.move(-1 * offset, 0.f);
+        mainview.move(-1 * offset * dt.asSeconds(), 0.f);
       
     }
-    if (InputMgr::GetKeyDown(Keyboard::D))
+    if (InputMgr::GetKey(Keyboard::D))
     {
-        mainview.move(offset, 0.f);
+        mainview.move(offset* dt.asSeconds(), 0.f);
     }
 
-    if (InputMgr::GetKeyDown(Keyboard::S))
+    if (InputMgr::GetKey(Keyboard::S))
     {
-        mainview.move(0.f, offset );
+        mainview.move(0.f, offset* dt.asSeconds());
     }
-    if (InputMgr::GetKeyDown(Keyboard::W))
+    if (InputMgr::GetKey(Keyboard::W))
     {
-        mainview.move(0.f, -1 * offset);
+        mainview.move(0.f, -1 * offset * dt.asSeconds());
     }
 
     if (InputMgr::GetKeyDown(Keyboard::BackSpace))
@@ -100,11 +100,7 @@ void Map::DragMap(RenderWindow& window)
         originPos.x = (int)(Mouse::getPosition(window).x) ;
         originPos.y = (int)(Mouse::getPosition(window).y) ;
         worldPos = window.mapPixelToCoords(originPos);
-
-
-        cout << "world : " << (int)worldPos.x/16 * 16 << " " << (int)worldPos.y /16 * 16 << endl;
-        cout << "origin : " << originPos.x << " " << originPos.y << endl;
-
+        
         currDrag = new RectangleShape;
 
         currDrag->setFillColor(Color(255, 0, 0, 128));
@@ -123,9 +119,6 @@ void Map::DragMap(RenderWindow& window)
 
         currDrag->setSize(Vector2f((int)(floor(currworldPos.x - worldPos.x) / 16) * 16 , (int)(floor(currworldPos.y - worldPos.y))/ 16 * 16 ));
 
-        cout << "curr World drag " << (int)(floor(currworldPos.x - worldPos.x) / 16) * 16 <<" " << (int)floor(currworldPos.y - worldPos.y) / 16 * 16  << endl;
-
-        cout << "curr mouse Pos " << currMousePos.x << " " << currMousePos.y << endl;
     }
 
     if (isDrag && InputMgr::GetMouseButton(Mouse::Right))
@@ -187,7 +180,7 @@ void Map::SaveMap()
         for (auto it2 : blocks)
         {
             fs  << idx << "," << it2->getGlobalBounds().left << "," << it2->getGlobalBounds().top << ","
-                << it2->getGlobalBounds().width << "," << it2->getGlobalBounds().height << ","<< endl;
+                << it2->getGlobalBounds().width << "," << it2->getGlobalBounds().height << endl;
             idx++;
         }
 

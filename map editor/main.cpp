@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "Wall.h"
 #include "GUI.h"
+#include "MyMouse.h"
 
 void CreateWalls(std::vector<Wall*>& walls, Map& mapdata);
 using namespace sf;
@@ -23,12 +24,15 @@ int main()
 
     View mainView(FloatRect(736, 256, area.width / windowMagnification, area.height / windowMagnification));
     View UiView = window.getDefaultView();
+    View backgroundView = window.getDefaultView();
+    View FrontgroundView = window.getDefaultView();
     
-
+    window.setMouseCursorVisible(false);
+    
     GUI ui;
- 
+    MyMouse mouse;
+    mouse.initMouse();
     Grid grid;
-
 
     Player player;
     bool isPlayerInit = false;
@@ -58,12 +62,19 @@ int main()
             if (event.type == Event::Closed)
                 window.close();
         }
- 
 
-        map.InputMap(windowMagnification, mainView,dt);
+        map.InputMap(windowMagnification, mainView, dt);
         map.DragMap(window);
-       
-        if (isStringPrint)
+        mouse.updateMouse(window, area);
+
+        if (InputMgr::GetKeyDown(Keyboard::H))
+        {
+            cout << mouse.GetMouseBox().getPosition().x << endl;
+            cout << mouse.GetMouseBox().getPosition().y << endl;
+        }
+
+    
+        if(isStringPrint)
         {
             stringTimer += dt.asSeconds();
             if (stringTimer >= 2.f)
@@ -121,6 +132,7 @@ int main()
 
         ui.InputUi();
         ui.ShowGUIMenu(dt.asSeconds());
+        ui.ClickButton(mouse);
 
 
         window.clear();
@@ -146,6 +158,9 @@ int main()
 
         ui.DrawUI(window);
         window.setView(mainView);
+        mouse.drawMouse(window);
+
+
         window.display();
     }
 
