@@ -159,6 +159,7 @@
     <ClCompile Include="MyMouse.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="TextBox.cpp" />
     <ClCompile Include="TextureHolder.cpp" />
     <ClCompile Include="TileMap.cpp" />
     <ClCompile Include="Utils.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="MyMouse.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="rapidcsv.h" />
+    <ClInclude Include="TextBox.h" />
     <ClInclude Include="TextureHolder.h" />
     <ClInclude Include="TileMap.h" />
     <ClInclude Include="Utils.h" />

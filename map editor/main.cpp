@@ -114,6 +114,7 @@ int main()
             stringTimer = 0.f;
         }
 
+
         if (isPlayerInit && dt.asSeconds() <= 1.f / 60.f)
         {
             InputMgr::Update(dt.asSeconds());

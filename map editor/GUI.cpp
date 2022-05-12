@@ -42,7 +42,8 @@ GUI::GUI() :defaultTileKey(0)
 	for (int idx = 0; idx < setObjsKey.size(); idx++)
 	{
 		objFilePaths.insert(std::pair<std::string, std::string>(setObjsKey[idx], setObjsValue[idx]));
-
+		TextBox* createBox = new TextBox(setObjsKey[idx],setObjsValue[idx]);
+		objSetButton.push_back(createBox);
 	}
 
 }
@@ -58,8 +59,9 @@ void GUI::InputUi()
 	{
 		isMenuClose = true;
 		isInputTab = false;
+
 	}
-	
+
 }
 
 void GUI::SetString(std::string str)
@@ -78,26 +80,31 @@ void GUI::ClickButton(MyMouse& mouse)
 	{
 		isObjset = false;
 		isTileset = true;
-
-
+		std::cout << "tile" << endl;
 	}
 
 	if (objButtion.getGlobalBounds().contains(mouse.GetmousePosWindow().x, mouse.GetmousePosWindow().y) && InputMgr::GetMouseButtonDown(Mouse::Left))
 	{
 		isObjset = true;
 		isTileset = false;
+		std::cout << "obj" << endl;
 	}
 
-	if (menuBar.getGlobalBounds().contains(mouse.GetmousePosWindow().x, mouse.GetmousePosWindow().y) && InputMgr::GetMouseButtonDown(Mouse::Left) && !isMenuOpen)
+	if (isObjset)
 	{
-		isMenuOpen = true;
+		for (auto it : objSetButton)
+		{
+
+			if (it->Getbox().getGlobalBounds().contains(mouse.GetmousePosWindow().x, mouse.GetmousePosWindow().y) && InputMgr::GetMouseButtonDown(Mouse::Left) && it->GetActive())
+			{
+				std::cout << it->GetSetstr() << endl;
+			}
+
+		}
+
 	}
-	if (menuBar.getGlobalBounds().contains(mouse.GetmousePosWindow().x, mouse.GetmousePosWindow().y) && InputMgr::GetMouseButtonDown(Mouse::Left) && isMenuOpen)
-	{
-		isMenuClose = true;
-	}
+	
 }
-
 
 void GUI::ShowGUIMenu(float dt)
 {
@@ -145,17 +152,70 @@ void GUI::ShowGUIMenu(float dt)
 
 	if (isTileset)
 	{
+	
+		for (auto it : objSetButton)
+		{
+			if (it->GetActive())
+			{
+				it->SetActive(false);
+			}
+		}
 		
-		loadTileSetButton();
+
+		
 	}
 
 	if (isObjset)
 	{
-		for (auto it : tileSetButton)
+		for (int i = 0; i < 20; i++)
 		{
-			delete it;
+			int offset = 75;
+			int idx = i + (currentPage * 20);
+
+
+			objSetButton[idx]->SetPosition(Vector2i(1100 + (i / 10) * offset * 1.75, 100 + (i % 10) * offset));
+			objSetButton[idx]->SetActive(true);
+
+
+		
 		}
-		tileSetButton.clear();
+	}
+
+
+	if (InputMgr::GetKeyDown(Keyboard::Num4))
+	{
+
+		for (auto it : objSetButton)
+		{
+			
+			it->SetActive(false);
+			
+		}
+		
+		currentPage--;
+		if (currentPage < 0)
+		{
+			currentPage = 0;
+		}
+		cout << currentPage << endl;
+	}
+
+	if (InputMgr::GetKeyDown(Keyboard::Num6))
+	{
+
+		for (auto it : objSetButton)
+		{
+		
+			it->SetActive(false);
+			
+		}
+		
+		currentPage++;
+			if (currentPage > 4)
+		{
+			currentPage = 4;
+		}
+		cout << currentPage << endl;
 
 	}
 }
@@ -166,15 +226,27 @@ void GUI::DrawUI(RenderWindow& window)
 	window.draw(menuInterface);
 	window.draw(tileButton);
 	window.draw(objButtion);
+
+
+	if (isObjset)
+	{
+		for (auto it : objSetButton)
+		{
+		
+
+			if (it->GetActive())
+			{
+				it->Draw(window);
+			}
+
+			
+		}
+	}
 }
 
 void GUI::loadTileSetButton()
 {
-	for (auto it : tileSetButton)
-	{
-		delete it;
-	}
-
+	
 	tileSetButton.clear();
 
 
@@ -186,3 +258,4 @@ void GUI::loadTileSetButton()
 
 	
 }
+

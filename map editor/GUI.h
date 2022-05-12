@@ -8,6 +8,7 @@
 #include <map>
 #include "TileMap.h"
 #include "rapidcsv.h"
+#include "TextBox.h"
 
 
 #define TilePath "graphics/tilesets"
@@ -46,12 +47,14 @@ private:
 
 	int defaultTileKey;
 
+	int currentPage = 0;
+
 	TileMap setTile;
 
-	std::map<tilesets, std::string> tileMapFilePaths;
-	std::vector <sf::Sprite*> tileSetButton;
-	std::map<std::string, std::string> objFilePaths;
-
+	std::map <tilesets, std::string> tileMapFilePaths;
+	std::vector <sf::Sprite> tileSetButton;
+	std::map <std::string, std::string> objFilePaths;
+	std::vector <TextBox*> objSetButton;
 
 public:
 
@@ -67,6 +70,7 @@ public:
 	void DrawUI(RenderWindow& window);
 
 	void loadTileSetButton();
+
 
 };
 
