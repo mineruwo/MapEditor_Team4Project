@@ -59,7 +59,7 @@ void GUI::InputUi()
 	{
 		isMenuClose = true;
 		isInputTab = false;
-
+		isObjset = false;
 	}
 
 }
@@ -87,6 +87,7 @@ void GUI::ClickButton(MyMouse& mouse)
 	{
 		isObjset = true;
 		isTileset = false;
+
 		std::cout << "obj" << endl;
 	}
 
