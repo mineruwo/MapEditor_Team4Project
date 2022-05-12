@@ -10,7 +10,7 @@ Map::Map()
     MapXSize = mapData.GetColumn<int>("MapXSize");
     MapYSize = mapData.GetColumn<int>("MapYSize");
     OBJFilePath = mapData.GetColumn<std::string>("OBJFilePath");
-
+    OBJSFilePath = mapData.GetColumn< std::string>("OBJSFilePath");
 
     for (auto it : OBJFilePath)
     {
@@ -21,7 +21,16 @@ Map::Map()
         ColW = objData.GetColumn<int>("ColW");
         ColH = objData.GetColumn<int>("ColH");
     }
-    
+
+    for (auto it : OBJSFilePath)
+    {
+        rapidcsv::Document objsData(it);
+        OBJnum = objsData.GetColumn<int>("OBJnum");
+        ObjFilePath = objsData.GetColumn<std::string>("ObjFilePath");
+        PosX = objsData.GetColumn<int>("PosX");
+        PosY = objsData.GetColumn<int>("PosY");
+    }
+
 }
 
 void Map::InputMap(int& windowMagnification, View& mainview, Time& dt)
@@ -90,7 +99,15 @@ void Map::InputMap(int& windowMagnification, View& mainview, Time& dt)
 
         }
     }
+    if (InputMgr::GetKeyDown(Keyboard::Delete))
+    {
 
+        if (!Objs.empty())
+        {
+            Objs.pop_back();
+
+        }
+    }
 }
 
 void Map::DragMap(RenderWindow& window,MyMouse& mouse)
@@ -151,6 +168,18 @@ void Map::DrawMap(sf::RenderWindow& window)
    
 }
 
+void Map::InputObj(Obj obj, MyMouse& mouse)
+{
+    Obj* createObj = new Obj();
+    Vector2f pos = (Vector2f)mouse.GetmousePosView();
+
+    createObj->SetFile(obj.GetFilePath());
+
+    createObj->SetPosition(pos);
+
+    Objs.push_back(createObj);
+}
+
 void Map::LoadMap()
 {
     int idx = 0;
@@ -164,6 +193,19 @@ void Map::LoadMap()
         blocks.push_back(createBlock);
 
         idx++;
+    }
+
+    idx = 0;
+    for (auto it : OBJnum)
+    {
+      Obj* creatobj = new Obj;
+
+      creatobj->SetFile(ObjFilePath[idx]);
+      creatobj->SetPosition(Vector2f(PosX[idx], PosY[idx]));
+
+      Objs.push_back(creatobj);
+
+      idx++;
     }
     
 }
@@ -179,14 +221,29 @@ void Map::SaveMap()
         
         for (auto it2 : blocks)
         {
-            fs  << idx << "," << it2->getGlobalBounds().left << "," << it2->getGlobalBounds().top << ","
-                << it2->getGlobalBounds().width << "," << it2->getGlobalBounds().height << endl;
+            fs << endl << idx << "," << it2->getGlobalBounds().left << "," << it2->getGlobalBounds().top << ","
+                << it2->getGlobalBounds().width << "," << it2->getGlobalBounds().height << ",";
+            idx++;
+        }
+
+        fs.close();
+    }
+
+    idx = 0;
+    for (auto it : OBJSFilePath)
+    {
+        fs.open(it, ios::app);
+
+        for (auto it2 : Objs)
+        {
+            fs << endl << idx << "," << it2->GetFilePath() << "," << it2->GetSprite().getPosition().x << "," << it2->GetSprite().getPosition().y << ",";
             idx++;
         }
 
         fs.close();
     }
 }
+
 
 std::vector<int> Map::GetMapNumber()
 {
@@ -206,5 +263,10 @@ std::vector<int> Map::GetMapYSize()
 std::vector<sf::RectangleShape*> Map::Getblocks()
 {
     return blocks;
+}
+
+std::vector<Obj*> Map::GetObjs()
+{
+    return Objs;
 }
 

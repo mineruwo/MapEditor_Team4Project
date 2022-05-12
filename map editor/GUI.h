@@ -9,9 +9,10 @@
 #include "TileMap.h"
 #include "rapidcsv.h"
 #include "TextBox.h"
-
+#include "Obj.h"
 
 #define TilePath "graphics/tilesets"
+#define ObjPath "graphics"
 
 using namespace sf;
 
@@ -42,9 +43,13 @@ private:
 	bool isTileset = false;
 	bool isObjset = false;
 
+	bool isSelectObj = false;
+
 	Font font;
 	Text UiText;
 
+	Obj* setobj;
+	
 	int defaultTileKey;
 
 	int currentPage = 0;
@@ -70,7 +75,16 @@ public:
 	void DrawUI(RenderWindow& window);
 
 	void loadTileSetButton();
+	void loadObjSetButton();
 
+	bool IsSelectObj()
+	{
+		return isSelectObj;
+	}
 
+	Obj Getobj()
+	{
+		return *setobj;
+	}
 };
 

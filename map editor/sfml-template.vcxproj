@@ -157,6 +157,7 @@
     <ClCompile Include="InputMgr.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="MyMouse.cpp" />
+    <ClCompile Include="Obj.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="TextBox.cpp" />
@@ -175,6 +176,7 @@
     <ClInclude Include="InputMgr.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MyMouse.h" />
+    <ClInclude Include="Obj.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="rapidcsv.h" />
     <ClInclude Include="TextBox.h" />

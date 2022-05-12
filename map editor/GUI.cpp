@@ -97,13 +97,34 @@ void GUI::ClickButton(MyMouse& mouse)
 
 			if (it->Getbox().getGlobalBounds().contains(mouse.GetmousePosWindow().x, mouse.GetmousePosWindow().y) && InputMgr::GetMouseButtonDown(Mouse::Left) && it->GetActive())
 			{
-				std::cout << it->GetSetstr() << endl;
+				std::string str; 
+				str += ObjPath;
+				str += it->GetSetstr();
+
+				if (!(setobj = nullptr))
+				{
+					delete setobj;
+				}
+				setobj = new Obj(str);
+
+				isSelectObj = true;
 			}
 
 		}
 
 	}
 	
+
+	if (isSelectObj)
+	{
+		setobj->Update(mouse);
+
+		if (InputMgr::GetMouseButtonDown(Mouse::Right))
+		{
+			delete setobj;
+			isSelectObj = false;
+		}
+	}
 }
 
 void GUI::ShowGUIMenu(float dt)
@@ -160,9 +181,6 @@ void GUI::ShowGUIMenu(float dt)
 				it->SetActive(false);
 			}
 		}
-		
-
-		
 	}
 
 	if (isObjset)
@@ -176,8 +194,6 @@ void GUI::ShowGUIMenu(float dt)
 			objSetButton[idx]->SetPosition(Vector2i(1100 + (i / 10) * offset * 1.75, 100 + (i % 10) * offset));
 			objSetButton[idx]->SetActive(true);
 
-
-		
 		}
 	}
 
@@ -242,6 +258,11 @@ void GUI::DrawUI(RenderWindow& window)
 			
 		}
 	}
+
+	if (isSelectObj)
+	{
+		setobj->Draw(window);
+	}
 }
 
 void GUI::loadTileSetButton()
@@ -258,4 +279,6 @@ void GUI::loadTileSetButton()
 
 	
 }
+
+
 

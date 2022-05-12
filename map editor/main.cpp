@@ -121,6 +121,13 @@ int main()
             player.Update(dt.asSeconds(), walls);
             grid.CreateGrid(area);
         }
+
+        if (ui.IsSelectObj() && InputMgr::GetMouseButtonDown(Mouse::Left))
+        {
+            map.InputObj(ui.Getobj(),mouse);
+        }
+
+
         CreateWalls(walls, map);
 
         ui.InputUi();
@@ -130,6 +137,11 @@ int main()
         window.clear();
         window.setView(mainView);
         window.draw(grid.Getgrid(), &grid.Gettexgrid());
+        for (auto it : map.GetObjs())
+        {
+            window.draw(it->GetSprite());
+        }
+
 
         if (isPlayerInit && dt.asSeconds() <= 1.f / 60.f)
         {
@@ -139,7 +151,7 @@ int main()
         {
             it->DrawWall(window);
         }
-
+     
         map.DrawMap(window);
 
         window.setView(UiView);
