@@ -23,18 +23,19 @@ private:
 	Sprite tile;
 	tilesets info;
 	std::string setFilePath;
+	IntRect coord;
 	bool isActive = false;
 	int id;
 	
 public:
 	Tile();
-	Tile(std::string FilePath, int id);
+	Tile(std::string FilePath, int id, IntRect coord);
 
 	void Update(MyMouse mouse);
 	void Draw(RenderWindow& window);
 
 	void SetFile(std::string FilePath);
-	void SetPosition(Vector2i pos);
+	void SetPosition(Vector2f pos);
 
 	std::string GetFilePath();
 	Sprite GetSprite();
@@ -44,8 +45,14 @@ public:
 
 	int GetID();
 	void SetID(int id);
+	void CopyTile(Tile copy);
 
 	void SetTileSetsInfo(int idx);
 	tilesets GetTilesets();
+
+	void SetCoord(IntRect coord);
+	IntRect GetCoord();
+
+
 };
 

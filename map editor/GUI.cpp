@@ -1,6 +1,6 @@
 #include "GUI.h"
 
-GUI::GUI() :defaultTileKey(0)
+GUI::GUI() 
 {
 	menuBar.setTexture(TextureHolder::GetTexture("graphics/UIopenMenuBar.png"));
 	menuBar.setPosition(1270, 768 * 0.5 - 100);
@@ -31,20 +31,26 @@ GUI::GUI() :defaultTileKey(0)
 	for (int idx = 0; idx < setTileKey.size(); idx++)
 	{
 		tileMapFilePaths.insert(std::pair<tilesets, std::string>(tilesets(setTileKey[idx]), setTileValue[idx]));
-		std::vector<Tile*>* createvecter = new std::vector<Tile*>;
-		
-		for (int i = 0; i < 90; i++)
-		{
-			Tile* CreateTile = new Tile;
-			CreateTile->SetID(i);
-			CreateTile->SetTileSetsInfo(idx);
-			CreateTile->SetFile(TilePath + setTileValue[idx]);
+		std::vector<Tile*>* createvecter = new std::vector<Tile*>;	
 
-			createvecter->push_back(CreateTile);
+		int tileid = 0;
+
+		for (int i = 0; i < 6; i++)
+		{
+			for (int j = 0; j < 15; j++)
+			{
+				Tile* createTile = new Tile(TilePath + setTileValue[idx], tileid, IntRect(0+(i*8),0+(j*8), 8, 8));
+
+				tileid++;
+
+				createvecter->push_back(createTile);
+			}
 		}
 
 		tilesButtion.push_back(*createvecter);
 	}
+
+	//tile 버튼 init
 
 	rapidcsv::Document objsData("data_tables/obj/objs.csv");
 	std::vector<std::string> setObjsKey = objsData.GetColumn<std::string>("Key");
@@ -57,6 +63,8 @@ GUI::GUI() :defaultTileKey(0)
 		TextBox* createBox = new TextBox(setObjsKey[idx], setObjsValue[idx]);
 		objSetButton.push_back(createBox);
 	}
+
+	//textbox 버튼 init
 }
 
 void GUI::InputUi()
@@ -70,9 +78,9 @@ void GUI::InputUi()
 	{
 		isMenuClose = true;
 		isInputTab = false;
+		isTileset = false;
 		isObjset = false;
 	}
-
 }
 
 void GUI::SetString(std::string str)
@@ -120,15 +128,35 @@ void GUI::ClickButton(MyMouse& mouse)
 				setobj = new Obj(str);
 
 				isSelectObj = true;
+
 			}
 
 		}
 
 	}
-	
-	
 
+	if (isTileset)
+	{
+		for (auto it : tilesButtion[tileCurrpage])
+		{
+			if (it->GetSprite().getGlobalBounds().contains(mouse.GetmousePosWindow().x, mouse.GetmousePosWindow().y) && InputMgr::GetMouseButtonDown(Mouse::Left) )
+			{
+				if (!(setTile = nullptr))
+				{
+					delete setTile;
+				}
 
+				setTile = new Tile();
+				setTile->CopyTile(*it);
+
+				isSelectTile = true;
+
+				cout << it->GetID() << endl;
+
+			}
+		}
+	}
+	
 	if (isSelectObj)
 	{
 		setobj->Update(mouse);
@@ -138,6 +166,18 @@ void GUI::ClickButton(MyMouse& mouse)
 			delete setobj;
 			isSelectObj = false;
 		}
+	}
+
+	if (isSelectTile)
+	{
+		setTile->Update(mouse);
+
+		if (InputMgr::GetMouseButtonDown(Mouse::Right))
+		{
+			delete setTile;
+			isSelectTile = false;
+		}
+
 	}
 }
 
@@ -187,6 +227,9 @@ void GUI::ShowGUIMenu(float dt)
 
 	if (isTileset)
 	{
+
+		int i = 0;
+		int j = 0;
 	
 		for (auto it : objSetButton)
 		{
@@ -198,6 +241,17 @@ void GUI::ShowGUIMenu(float dt)
 
 		for (auto it : tilesButtion[tileCurrpage])
 		{
+			it->SetActive(true);
+		
+			it->SetPosition(Vector2f(1100 + (i * 32) + i, 100 + (j * 32)+j));
+			
+			j++;
+
+			if (j > 15)
+			{
+				j = 0;
+				i++;
+			}
 
 		}
 
@@ -205,6 +259,16 @@ void GUI::ShowGUIMenu(float dt)
 
 	if (isObjset)
 	{
+
+		for (auto it : tilesButtion[tileCurrpage])
+		{
+			if (it->GetActive())
+			{
+				it->SetActive(false);
+			}
+		}
+
+
 		for (int i = 0; i < 20; i++)
 		{
 			int offset = 75;
@@ -221,38 +285,73 @@ void GUI::ShowGUIMenu(float dt)
 	if (InputMgr::GetKeyDown(Keyboard::Num4))
 	{
 
-		for (auto it : objSetButton)
+		if (isObjset)
 		{
-			
-			it->SetActive(false);
-			
+			for (auto it : objSetButton)
+			{
+
+				it->SetActive(false);
+
+			}
+
+			currentPage--;
+			if (currentPage < 0)
+			{
+				currentPage = 0;
+			}
+			cout << currentPage << endl;
+		}
+
+		if (isTileset)
+		{
+			for (auto it : tilesButtion[tileCurrpage])
+			{
+				it->SetActive(false);
+			}
+			tileCurrpage--;
+			if (tileCurrpage < 0)
+			{
+				tileCurrpage = 0;
+			}
+
 		}
 		
-		currentPage--;
-		if (currentPage < 0)
-		{
-			currentPage = 0;
-		}
-		cout << currentPage << endl;
 	}
 
 	if (InputMgr::GetKeyDown(Keyboard::Num6))
 	{
 
-		for (auto it : objSetButton)
+		if (isObjset)
 		{
-		
-			it->SetActive(false);
-			
-		}
-		
-		currentPage++;
-			if (currentPage > 4)
-		{
-			currentPage = 4;
-		}
-		cout << currentPage << endl;
+			for (auto it : objSetButton)
+			{
 
+				it->SetActive(false);
+
+			}
+			currentPage++;
+			if (currentPage > 4)
+			{
+				currentPage = 4;
+			}
+			cout << currentPage << endl;
+		}
+
+		if (isTileset)
+		{
+			for (auto it : tilesButtion[tileCurrpage])
+			{
+
+				it->SetActive(false);
+
+			}
+			tileCurrpage++;
+			if (tileCurrpage > 6)
+			{
+				tileCurrpage = 6;
+			}
+		}
+		
 	}
 }
 
@@ -268,28 +367,22 @@ void GUI::DrawUI(RenderWindow& window)
 	{
 		for (auto it : objSetButton)
 		{
-		
 
 			if (it->GetActive())
 			{
 				it->Draw(window);
-			}
-
-			
+			}	
 		}
 	}
 
 	if (isTileset)
 	{
-		for (auto it : tilesButtion)
+		for (auto it : tilesButtion[tileCurrpage])
 		{
-
-			for (auto it2 : it)
+			if (it->GetActive())
 			{
-
-
+				it->Draw(window);
 			}
-
 
 		}
 	}
@@ -298,20 +391,14 @@ void GUI::DrawUI(RenderWindow& window)
 	{
 		setobj->Draw(window);
 	}
+
+	if (isSelectTile)
+	{
+		setTile->Draw(window);
+	}
 }
 
-void GUI::loadTileSetButton()
-{
-	
 
-
-	int idx = 0;
-	std::string path;
-
-	path += TilePath;
-
-	
-}
 
 
 

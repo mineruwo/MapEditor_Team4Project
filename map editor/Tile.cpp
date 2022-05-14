@@ -2,11 +2,15 @@
 
 Tile::Tile()
 {
+	
 }
 
-Tile::Tile(std::string FilePath, int id)
+Tile::Tile(std::string FilePath, int id, IntRect coord)
 {
 	tile.setTexture(TextureHolder::GetTexture(FilePath));
+	tile.setScale(Vector2f(2, 2));
+	tile.setTextureRect(coord);
+	this->coord = coord;
 	this->id = id;
 	setFilePath = FilePath;
 
@@ -14,7 +18,7 @@ Tile::Tile(std::string FilePath, int id)
 
 void Tile::Update(MyMouse mouse)
 {
-	tile.setPosition(Vector2f(((mouse.GetmousePosWindow().x/16)*16), ((mouse.GetmousePosWindow().y / 16)*16)));
+	tile.setPosition(Vector2f(mouse.GetmousePosWindow().x, mouse.GetmousePosWindow().y));
 }
 
 void Tile::Draw(RenderWindow& window)
@@ -26,21 +30,22 @@ void Tile::SetFile(std::string FilePath)
 {
 	setFilePath = FilePath;
 	tile.setTexture(TextureHolder::GetTexture(FilePath));
+	tile.setScale(Vector2f(2, 2));
 }
 
-void Tile::SetPosition(Vector2i pos)
+void Tile::SetPosition(Vector2f pos)
 {
 	tile.setPosition(Vector2f(pos));
 }
 
 std::string Tile::GetFilePath()
 {
-	return std::string();
+	return setFilePath;
 }
 
 Sprite Tile::GetSprite()
 {
-	return Sprite();
+	return tile;
 }
 
 void Tile::SetActive(bool isActive)
@@ -63,6 +68,16 @@ void Tile::SetID(int id)
 	this->id = id;
 }
 
+void Tile::CopyTile(Tile copy)
+{
+	tile = copy.GetSprite();
+	setFilePath = copy.GetFilePath();
+	info = copy.GetTilesets();
+	isActive = copy.GetActive();
+	id = copy.GetID();
+
+}
+
 void Tile::SetTileSetsInfo(int idx)
 {
 	info = tilesets(idx);
@@ -72,3 +87,17 @@ tilesets Tile::GetTilesets()
 {
 	return info;
 }
+
+void Tile::SetCoord(IntRect coord)
+{
+	this->coord = coord;
+	tile.setTextureRect(coord);
+
+}
+
+IntRect Tile::GetCoord()
+{
+	return coord;
+}
+
+

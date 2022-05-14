@@ -15,4 +15,7 @@ public:
 	
 	void DrawWall(RenderWindow& window);
 	const FloatRect GetWallRect();
+
+	void TurnOffRect();
+	void TurnOnRect();
 };

@@ -21,6 +21,7 @@ private:
 	std::vector<int> MapYSize;
 	std::vector<std::string> OBJFilePath;
 	std::vector<std::string> OBJSFilePath;
+	std::vector<std::string> TileDataFilePath;
 
 	std::vector<int> ColObjNum;
 	std::vector<int> ColL;
@@ -33,10 +34,19 @@ private:
 	std::vector<int> PosX;
 	std::vector<int> PosY;
 
-	std::vector<sf::RectangleShape*> blocks;
-	std::vector<Obj*> Objs;
-	std::vector <Tile*> tiles;
+	std::vector<int> tileNum;
+	std::vector<std::string> TileFilePath;
+	std::vector<int> TilePosX;
+	std::vector<int> TilePosY;
+	std::vector<int> coordl;
+	std::vector<int> coordt;
+	std::vector<int> id;
+	std::vector<int> tileset;
 
+	std::vector<sf::RectangleShape*> blocks;//rect
+	std::vector<Obj*> Objs;//obj
+	std::vector <Tile*> tiles;//tile
+  
 	Vector2i originPos;
 	Vector2f worldPos;
 	Vector2f currworldPos;
@@ -61,7 +71,8 @@ public:
 	std::vector<int> GetMapYSize();
 	std::vector<sf::RectangleShape*> Getblocks();
 	std::vector<Obj*> GetObjs();
-
+	std::vector<Tile*> GetTiles();
+ 
 	
 };
 

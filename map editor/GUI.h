@@ -43,7 +43,6 @@ private:
 	Obj* setobj;
 	Tile* setTile;
 	
-	int defaultTileKey;
 
 	int currentPage = 0;
 	int tileCurrpage = 0;
@@ -52,7 +51,6 @@ private:
 	std::map <tilesets, std::string> tileMapFilePaths;
 	std::map <std::string, std::string> objFilePaths;
 	std::vector <TextBox*> objSetButton;
-
 	std::vector<std::vector<Tile*>> tilesButtion;
 
 public:
@@ -68,7 +66,6 @@ public:
 	void ShowGUIMenu(float dt);
 	void DrawUI(RenderWindow& window);
 
-	void loadTileSetButton();
 
 	bool IsSelectObj()
 	{
@@ -78,6 +75,16 @@ public:
 	Obj Getobj()
 	{
 		return *setobj;
+	}
+
+	bool IsSelectTile()
+	{
+		return isSelectTile;
+	}
+
+	Tile GetTile()
+	{
+		return *setTile;
 	}
 };
 

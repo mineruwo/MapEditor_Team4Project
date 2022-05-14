@@ -10,7 +10,9 @@ Map::Map()
     MapXSize = mapData.GetColumn<int>("MapXSize");
     MapYSize = mapData.GetColumn<int>("MapYSize");
     OBJFilePath = mapData.GetColumn<std::string>("OBJFilePath");
-    OBJSFilePath = mapData.GetColumn< std::string>("OBJSFilePath");
+    OBJSFilePath = mapData.GetColumn<std::string>("OBJSFilePath");
+    TileDataFilePath = mapData.GetColumn<std::string>("TileFilePath");
+
 
     for (auto it : OBJFilePath)
     {
@@ -29,6 +31,19 @@ Map::Map()
         ObjFilePath = objsData.GetColumn<std::string>("ObjFilePath");
         PosX = objsData.GetColumn<int>("PosX");
         PosY = objsData.GetColumn<int>("PosY");
+    }
+
+    for (auto it : TileDataFilePath)
+    {
+        rapidcsv::Document tileData(it);
+        tileNum = tileData.GetColumn<int>("tilenum");
+        TileFilePath = tileData.GetColumn<std::string>("TileFilePath");
+        TilePosX = tileData.GetColumn<int>("PosX");
+        TilePosY = tileData.GetColumn<int>("PosY");
+        coordl = tileData.GetColumn<int>("coordl");
+        coordt = tileData.GetColumn<int>("coordt");
+        id = tileData.GetColumn<int>("id");
+        tileset = tileData.GetColumn<int>("tileset");
     }
 
 }
@@ -108,6 +123,13 @@ void Map::InputMap(int& windowMagnification, View& mainview, Time& dt)
 
         }
     }
+    if (InputMgr::GetKeyDown(Keyboard::Space))
+    {
+        if (!tiles.empty())
+        {
+            tiles.pop_back();
+        }
+    }
 }
 
 void Map::DragMap(RenderWindow& window,MyMouse& mouse)
@@ -182,6 +204,16 @@ void Map::InputObj(Obj obj, MyMouse& mouse)
 
 void Map::InputTiles(Tile tile, MyMouse& mouse)
 {
+    Tile* createTile = new Tile();
+    Vector2f pos = Vector2f(mouse.GetmousePosView());
+
+    createTile->CopyTile(tile);
+
+    createTile->SetPosition(pos);
+    createTile->GetSprite().setScale(Vector2f(2, 2));
+
+    tiles.push_back(createTile);
+
 }
 
 void Map::LoadMap()
@@ -212,6 +244,22 @@ void Map::LoadMap()
       idx++;
     }
     
+    idx = 0;
+    for (auto it : tileNum)
+    {
+        Tile* createTile = new Tile;
+
+        createTile->SetFile(TileFilePath[idx]);
+        createTile->SetPosition(Vector2f(TilePosX[idx], TilePosY[idx]));
+        createTile->SetCoord(IntRect(coordl[idx], coordt[idx], 8, 8));
+        createTile->SetID(id[idx]);
+        createTile->SetTileSetsInfo(tileset[idx]);
+
+        tiles.push_back(createTile);
+
+        idx++;
+    }
+
 }
 
 void Map::SaveMap()
@@ -246,6 +294,18 @@ void Map::SaveMap()
 
         fs.close();
     }
+
+    idx = 0;
+    for (auto it : TileDataFilePath)
+    {
+        fs.open(it, ios::app);
+
+        for (auto it2 : tiles)
+        {
+            fs << idx << "," << it2->GetFilePath() << "," << it2->GetSprite().getPosition().x << "," << it2->GetSprite().getPosition().y << "," << it2->GetCoord().left << "," << it2->GetCoord().top << "," << it2->GetID() << "," << int(it2->GetTilesets()) << endl;
+            idx++;
+        }
+    }
 }
 
 
@@ -272,5 +332,10 @@ std::vector<sf::RectangleShape*> Map::Getblocks()
 std::vector<Obj*> Map::GetObjs()
 {
     return Objs;
+}
+
+std::vector<Tile*> Map::GetTiles()
+{
+    return tiles;
 }
 

@@ -47,6 +47,8 @@ int main()
 
     std::vector <Wall*> walls;
 
+    bool turnOnRect = true;
+
     CreateWalls(walls, map);
     
     while (window.isOpen())
@@ -114,6 +116,8 @@ int main()
             stringTimer = 0.f;
         }
 
+     
+
 
         if (isPlayerInit && dt.asSeconds() <= 1.f / 60.f)
         {
@@ -125,6 +129,11 @@ int main()
         if (ui.IsSelectObj() && InputMgr::GetMouseButtonDown(Mouse::Left))
         {
             map.InputObj(ui.Getobj(),mouse);
+        }
+
+        if (ui.IsSelectTile() && InputMgr::GetMouseButtonDown(Mouse::Left))
+        {
+            map.InputTiles(ui.GetTile(), mouse);
         }
 
         if (InputMgr::GetKeyDown(Keyboard::Escape))
@@ -162,16 +171,21 @@ int main()
         {
             window.draw(it->GetSprite());
         }
+        for (auto it : walls)
+        {
+            it->DrawWall(window);
+        }
 
+        for (auto it : map.GetTiles())
+        {
+            window.draw(it->GetSprite());
+        }
 
         if (isPlayerInit && dt.asSeconds() <= 1.f / 60.f)
         {
             window.draw(player.GetSprite());
         }
-        for (auto it : walls)
-        {
-            it->DrawWall(window);
-        }
+        
      
         map.DrawMap(window);
 

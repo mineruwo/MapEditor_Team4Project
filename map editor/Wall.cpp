@@ -33,3 +33,13 @@ const FloatRect Wall::GetWallRect()
 {
 	return wallRect;
 }
+
+void Wall::TurnOffRect()
+{
+	shape.setFillColor(Color(0, 0, 0, 0));
+}
+
+void Wall::TurnOnRect()
+{
+	shape.setFillColor(Color(0, 255, 0, 126));
+}
