@@ -8,6 +8,7 @@
 #include <string.h>
 #include "Grid.h"
 #include "TileMap.h"
+#include "Tile.h"
 #include "MyMouse.h"
 #include "Obj.h"
 
@@ -34,6 +35,7 @@ private:
 
 	std::vector<sf::RectangleShape*> blocks;
 	std::vector<Obj*> Objs;
+	std::vector <Tile*> tiles;
 
 	Vector2i originPos;
 	Vector2f worldPos;
@@ -42,8 +44,6 @@ private:
 
 	RectangleShape* currDrag;
 
-
-
 public:
 	Map();
 	void InputMap(int& windowMagnification, View& mainview, Time& dt);
@@ -51,6 +51,7 @@ public:
 	void DrawMap(sf::RenderWindow & window);
 
 	void InputObj(Obj obj, MyMouse& mouse);
+	void InputTiles(Tile tile, MyMouse& mouse);
 
 	void LoadMap();
 	void SaveMap();

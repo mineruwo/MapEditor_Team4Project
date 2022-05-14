@@ -162,6 +162,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="TextBox.cpp" />
     <ClCompile Include="TextureHolder.cpp" />
+    <ClCompile Include="Tile.cpp" />
     <ClCompile Include="TileMap.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Wall.cpp" />
@@ -181,6 +182,7 @@
     <ClInclude Include="rapidcsv.h" />
     <ClInclude Include="TextBox.h" />
     <ClInclude Include="TextureHolder.h" />
+    <ClInclude Include="Tile.h" />
     <ClInclude Include="TileMap.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Wall.h" />

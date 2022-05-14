@@ -180,6 +180,10 @@ void Map::InputObj(Obj obj, MyMouse& mouse)
     Objs.push_back(createObj);
 }
 
+void Map::InputTiles(Tile tile, MyMouse& mouse)
+{
+}
+
 void Map::LoadMap()
 {
     int idx = 0;
@@ -221,8 +225,8 @@ void Map::SaveMap()
         
         for (auto it2 : blocks)
         {
-            fs << endl << idx << "," << it2->getGlobalBounds().left << "," << it2->getGlobalBounds().top << ","
-                << it2->getGlobalBounds().width << "," << it2->getGlobalBounds().height << ",";
+            fs << idx << "," << it2->getGlobalBounds().left << "," << it2->getGlobalBounds().top << ","
+                << it2->getGlobalBounds().width << "," << it2->getGlobalBounds().height << "," << endl;
             idx++;
         }
 
@@ -236,7 +240,7 @@ void Map::SaveMap()
 
         for (auto it2 : Objs)
         {
-            fs << endl << idx << "," << it2->GetFilePath() << "," << it2->GetSprite().getPosition().x << "," << it2->GetSprite().getPosition().y << ",";
+            fs << idx << "," << it2->GetFilePath() << "," << it2->GetSprite().getPosition().x << "," << it2->GetSprite().getPosition().y << "," << endl;
             idx++;
         }
 

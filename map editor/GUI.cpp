@@ -28,10 +28,22 @@ GUI::GUI() :defaultTileKey(0)
 	std::vector<std::string> setTileValue = tileMapdata.GetColumn<std::string>("TileFilePath");
 
 	
-	for(int idx = 0; idx < setTileKey.size();idx++)
+	for (int idx = 0; idx < setTileKey.size(); idx++)
 	{
-		tileMapFilePaths.insert(std::pair<tilesets,std::string>(tilesets(setTileKey[idx]), setTileValue[idx]));
+		tileMapFilePaths.insert(std::pair<tilesets, std::string>(tilesets(setTileKey[idx]), setTileValue[idx]));
+		std::vector<Tile*>* createvecter = new std::vector<Tile*>;
+		
+		for (int i = 0; i < 90; i++)
+		{
+			Tile* CreateTile = new Tile;
+			CreateTile->SetID(i);
+			CreateTile->SetTileSetsInfo(idx);
+			CreateTile->SetFile(TilePath + setTileValue[idx]);
 
+			createvecter->push_back(CreateTile);
+		}
+
+		tilesButtion.push_back(*createvecter);
 	}
 
 	rapidcsv::Document objsData("data_tables/obj/objs.csv");
@@ -42,10 +54,9 @@ GUI::GUI() :defaultTileKey(0)
 	for (int idx = 0; idx < setObjsKey.size(); idx++)
 	{
 		objFilePaths.insert(std::pair<std::string, std::string>(setObjsKey[idx], setObjsValue[idx]));
-		TextBox* createBox = new TextBox(setObjsKey[idx],setObjsValue[idx]);
+		TextBox* createBox = new TextBox(setObjsKey[idx], setObjsValue[idx]);
 		objSetButton.push_back(createBox);
 	}
-
 }
 
 void GUI::InputUi()
@@ -115,6 +126,8 @@ void GUI::ClickButton(MyMouse& mouse)
 
 	}
 	
+	
+
 
 	if (isSelectObj)
 	{
@@ -182,6 +195,12 @@ void GUI::ShowGUIMenu(float dt)
 				it->SetActive(false);
 			}
 		}
+
+		for (auto it : tilesButtion[tileCurrpage])
+		{
+
+		}
+
 	}
 
 	if (isObjset)
@@ -260,6 +279,21 @@ void GUI::DrawUI(RenderWindow& window)
 		}
 	}
 
+	if (isTileset)
+	{
+		for (auto it : tilesButtion)
+		{
+
+			for (auto it2 : it)
+			{
+
+
+			}
+
+
+		}
+	}
+
 	if (isSelectObj)
 	{
 		setobj->Draw(window);
@@ -269,14 +303,12 @@ void GUI::DrawUI(RenderWindow& window)
 void GUI::loadTileSetButton()
 {
 	
-	tileSetButton.clear();
 
 
 	int idx = 0;
 	std::string path;
 
 	path += TilePath;
-	path += tileMapFilePaths.at(tilesets(defaultTileKey));
 
 	
 }

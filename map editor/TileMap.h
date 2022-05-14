@@ -14,6 +14,8 @@ private:
 
 public:
 	bool load(const std::string& tileset, sf::Vector2u tileSize, std::vector<int> tiles, unsigned int width, unsigned int height);
+    bool load(const std::string& tileset, sf::Vector2u tileSize, unsigned int width, unsigned int height);
+
     VertexArray GetVertexArray();
 
     void setTileset(Texture tex);

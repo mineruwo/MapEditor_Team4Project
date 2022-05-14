@@ -127,6 +127,26 @@ int main()
             map.InputObj(ui.Getobj(),mouse);
         }
 
+        if (InputMgr::GetKeyDown(Keyboard::Escape))
+        {
+            for (auto it : walls)
+            {
+                delete it;
+            }
+            walls.clear();
+           
+            
+            for (auto it : map.GetObjs())
+            {
+                delete it;
+            }
+            map.GetObjs().clear();
+
+            
+            window.close();
+            break;
+        }
+
 
         CreateWalls(walls, map);
 
@@ -137,6 +157,7 @@ int main()
         window.clear();
         window.setView(mainView);
         window.draw(grid.Getgrid(), &grid.Gettexgrid());
+
         for (auto it : map.GetObjs())
         {
             window.draw(it->GetSprite());

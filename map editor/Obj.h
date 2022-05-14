@@ -1,7 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "TextureHolder.h"
 #include "MyMouse.h"
+#include "../map editor/TextureHolder.h"
 
 using namespace sf;
 
@@ -13,8 +13,8 @@ private:
 public:
 	Obj();
 	Obj(std::string str);
-	void Update(MyMouse mouse);
 	void Draw(RenderWindow& window);
+	void Update(MyMouse mouse);
 
 	void SetFile(std::string file);
 	void SetPosition(Vector2f pos);

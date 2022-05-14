@@ -1,0 +1,51 @@
+#pragma once
+#include <SFML/Graphics.hpp>
+#include "TextureHolder.h"
+#include "MyMouse.h"
+
+using namespace sf;
+
+enum class tilesets
+{
+	bgDirt,
+	bgBrick,
+	bgSnow,
+	cement,
+	dirt,
+	girder,
+	snow,
+	count
+};
+
+class Tile
+{
+private:
+	Sprite tile;
+	tilesets info;
+	std::string setFilePath;
+	bool isActive = false;
+	int id;
+	
+public:
+	Tile();
+	Tile(std::string FilePath, int id);
+
+	void Update(MyMouse mouse);
+	void Draw(RenderWindow& window);
+
+	void SetFile(std::string FilePath);
+	void SetPosition(Vector2i pos);
+
+	std::string GetFilePath();
+	Sprite GetSprite();
+
+	void SetActive(bool isActive);
+	bool GetActive();
+
+	int GetID();
+	void SetID(int id);
+
+	void SetTileSetsInfo(int idx);
+	tilesets GetTilesets();
+};
+

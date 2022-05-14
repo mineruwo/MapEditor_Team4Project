@@ -10,23 +10,14 @@
 #include "rapidcsv.h"
 #include "TextBox.h"
 #include "Obj.h"
+#include "Tile.h"
 
 #define TilePath "graphics/tilesets"
 #define ObjPath "graphics"
 
 using namespace sf;
 
-enum class tilesets
-{
-	bgDirt,
-	bgBrick,
-	bgSnow,
-	cement,
-	dirt,
-	girder,
-	snow,
-	count
-};
+
 
 class GUI
 {
@@ -44,22 +35,25 @@ private:
 	bool isObjset = false;
 
 	bool isSelectObj = false;
+	bool isSelectTile = false;
 
 	Font font;
 	Text UiText;
 
 	Obj* setobj;
+	Tile* setTile;
 	
 	int defaultTileKey;
 
 	int currentPage = 0;
+	int tileCurrpage = 0;
 
-	TileMap setTile;
 
 	std::map <tilesets, std::string> tileMapFilePaths;
-	std::vector <sf::Sprite> tileSetButton;
 	std::map <std::string, std::string> objFilePaths;
 	std::vector <TextBox*> objSetButton;
+
+	std::vector<std::vector<Tile*>> tilesButtion;
 
 public:
 
@@ -75,7 +69,6 @@ public:
 	void DrawUI(RenderWindow& window);
 
 	void loadTileSetButton();
-	void loadObjSetButton();
 
 	bool IsSelectObj()
 	{
