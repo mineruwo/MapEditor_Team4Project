@@ -43,7 +43,6 @@ Map::Map()
         coordl = tileData.GetColumn<int>("coordl");
         coordt = tileData.GetColumn<int>("coordt");
         id = tileData.GetColumn<int>("id");
-        tileset = tileData.GetColumn<int>("tileset");
     }
 
 }
@@ -83,26 +82,26 @@ void Map::InputMap(int& windowMagnification, View& mainview, Time& dt)
         mainview.setSize(1366 / windowMagnification, 768 / windowMagnification);
 
     }
-    float offset = 320.f;
+    float offset = 32.f;
 
-    if (InputMgr::GetKey(Keyboard::A))
+    if (InputMgr::GetKeyDown(Keyboard::A))
     {
 
-        mainview.move(-1 * offset * dt.asSeconds(), 0.f);
+        mainview.move(-1 * offset, 0.f);
       
     }
-    if (InputMgr::GetKey(Keyboard::D))
+    if (InputMgr::GetKeyDown(Keyboard::D))
     {
-        mainview.move(offset* dt.asSeconds(), 0.f);
+        mainview.move(offset, 0.f);
     }
 
-    if (InputMgr::GetKey(Keyboard::S))
+    if (InputMgr::GetKeyDown(Keyboard::S))
     {
-        mainview.move(0.f, offset* dt.asSeconds());
+        mainview.move(0.f, offset);
     }
-    if (InputMgr::GetKey(Keyboard::W))
+    if (InputMgr::GetKeyDown(Keyboard::W))
     {
-        mainview.move(0.f, -1 * offset * dt.asSeconds());
+        mainview.move(0.f, -1 * offset);
     }
 
     if (InputMgr::GetKeyDown(Keyboard::BackSpace))
@@ -208,8 +207,8 @@ void Map::InputTiles(Tile tile, MyMouse& mouse)
     Vector2f pos = Vector2f(mouse.GetmousePosView());
 
     createTile->CopyTile(tile);
-
     createTile->SetPosition(pos);
+    createTile->SetCoord(IntRect(tile.GetCoord().left, tile.GetCoord().top, 8, 8));
     createTile->GetSprite().setScale(Vector2f(2, 2));
 
     tiles.push_back(createTile);
@@ -253,7 +252,6 @@ void Map::LoadMap()
         createTile->SetPosition(Vector2f(TilePosX[idx], TilePosY[idx]));
         createTile->SetCoord(IntRect(coordl[idx], coordt[idx], 8, 8));
         createTile->SetID(id[idx]);
-        createTile->SetTileSetsInfo(tileset[idx]);
 
         tiles.push_back(createTile);
 
@@ -302,7 +300,7 @@ void Map::SaveMap()
 
         for (auto it2 : tiles)
         {
-            fs << idx << "," << it2->GetFilePath() << "," << it2->GetSprite().getPosition().x << "," << it2->GetSprite().getPosition().y << "," << it2->GetCoord().left << "," << it2->GetCoord().top << "," << it2->GetID() << "," << int(it2->GetTilesets()) << endl;
+            fs << idx << "," << it2->GetFilePath() << "," << it2->GetSprite().getPosition().x << "," << it2->GetSprite().getPosition().y << "," << it2->GetCoord().left << "," << it2->GetCoord().top << "," << it2->GetID() << ","  << endl;
             idx++;
         }
     }

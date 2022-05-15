@@ -10,7 +10,8 @@ Tile::Tile(std::string FilePath, int id, IntRect coord)
 	tile.setTexture(TextureHolder::GetTexture(FilePath));
 	tile.setScale(Vector2f(2, 2));
 	tile.setTextureRect(coord);
-	this->coord = coord;
+	this->coord.left = tile.getTextureRect().left;
+	this->coord.top = tile.getTextureRect().top;
 	this->id = id;
 	setFilePath = FilePath;
 
@@ -97,7 +98,7 @@ void Tile::SetCoord(IntRect coord)
 
 IntRect Tile::GetCoord()
 {
-	return coord;
+	return tile.getTextureRect();
 }
 
 

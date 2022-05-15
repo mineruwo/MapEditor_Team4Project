@@ -3,7 +3,7 @@
 void MyMouse::initMouse()
 {
 	mouseBox.setSize(Vector2f(16, 16));
-	mouseBox.setFillColor(Color(100, 100, 150, 130));
+	mouseBox.setFillColor(Color(255, 100, 150, 130));
 	font.loadFromFile("graphics/RobotoFlex-Regular.ttf");
 	posText.setFont(font);
 	posText.setCharacterSize(7);

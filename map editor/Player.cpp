@@ -17,7 +17,7 @@ Player::Player()
 ================================*/
 void Player::Init()
 {
-	sprite.setPosition(815,511);
+	sprite.setPosition(20,20);
 	sprite.setScale(2.f, 2.f);
 	sprite.setOrigin(0, 32 * 2.f);
 
