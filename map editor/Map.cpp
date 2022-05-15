@@ -177,6 +177,27 @@ void Map::DragMap(RenderWindow& window,MyMouse& mouse)
         delete currDrag;
         isDrag = false;
     }
+
+
+    if (InputMgr::GetKey(Keyboard::LControl) && InputMgr::GetMouseButtonDown(Mouse::Left))
+    {
+
+    }
+
+    if (InputMgr::GetKey(Keyboard::LControl) && InputMgr::GetMouseButton(Mouse::Left) && isDrag)
+    {
+
+    }
+
+    if (isDrag && InputMgr::GetMouseButton(Mouse::Right))
+    {
+
+    }
+    if ((InputMgr::GetKeyUp(Keyboard::LControl) || InputMgr::GetMouseButtonUp(Mouse::Left)) && isDrag)
+    {
+
+    }
+
 }
 
 void Map::DrawMap(sf::RenderWindow& window)
